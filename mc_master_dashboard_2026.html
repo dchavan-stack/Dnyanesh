@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MC Engagement – Support Analytics Master Dashboard (Feb–Jun 2026)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;color:#1a1a2e;font-size:13px}
+.page-header{background:linear-gradient(135deg,#032d60 0%,#0070d2 100%);color:white;padding:28px 40px 22px}
+.page-header h1{font-size:24px;font-weight:700}
+.page-header .sub{font-size:13px;opacity:.8;margin-top:4px}
+.meta-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.meta-pills span{background:rgba(255,255,255,.15);padding:4px 12px;border-radius:20px;font-size:11px}
+.tab-nav{display:flex;background:#021f45;padding:0 30px;overflow-x:auto}
+.tab-nav button{padding:11px 20px;border:none;background:transparent;color:rgba(255,255,255,.55);font-size:12px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
+.tab-nav button.active{color:white;border-bottom-color:#ff6900}
+.tab-nav button:hover:not(.active){color:rgba(255,255,255,.85)}
+.tab-content{display:none}.tab-content.active{display:block}
+.container{max-width:1300px;margin:0 auto;padding:22px 20px 48px}
+.sec{font-size:11px;font-weight:700;color:#0070d2;text-transform:uppercase;letter-spacing:1.2px;margin:26px 0 11px;padding-bottom:6px;border-bottom:2px solid #d4e9ff;display:flex;align-items:center;gap:7px}
+.sec::before{content:attr(data-i);font-size:14px}
+.sec.or{color:#ff6900;border-bottom-color:#ffe0cc}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:11px}
+.kpi{background:white;border-radius:10px;padding:14px 16px 12px;box-shadow:0 2px 6px rgba(0,0,0,.07);border-top:4px solid}
+.kpi.bl{border-color:#0070d2}.kpi.or{border-color:#ff6900}.kpi.gn{border-color:#2e844a}
+.kpi.rd{border-color:#c23934}.kpi.pu{border-color:#7b5ea7}.kpi.go{border-color:#c6951a}
+.kpi .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#777}
+.kpi .val{font-size:26px;font-weight:700;line-height:1.1;margin:4px 0 2px}
+.kpi.bl .val{color:#0070d2}.kpi.or .val{color:#ff6900}.kpi.gn .val{color:#2e844a}
+.kpi.rd .val{color:#c23934}.kpi.pu .val{color:#7b5ea7}.kpi.go .val{color:#c6951a}
+.kpi .hint{font-size:10px;color:#999}
+.tw{overflow-x:auto;background:white;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:6px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead th{background:#032d60;color:white;padding:9px 12px;text-align:left;font-weight:600;font-size:11px;white-space:nowrap}
+thead.or-head th{background:#4a1942}
+tbody tr:nth-child(even) td{background:#f7faff}
+tbody.or-body tr:nth-child(even) td{background:#fff8f5}
+tbody tr:hover td{background:#eef4ff}
+tbody.or-body tr:hover td{background:#fff0e8}
+tbody td{padding:8px 12px;border-bottom:1px solid #edf2f7;vertical-align:middle}
+tfoot td{padding:8px 12px;background:#e3eeff;font-weight:700;font-size:12px}
+tfoot.or-foot td{background:#ffe8d8}
+.num{text-align:right;font-weight:600}.pct{text-align:right;color:#555}
+.s1{display:inline-block;padding:2px 7px;border-radius:9px;font-size:10px;font-weight:700;background:#fde8e8;color:#a61c00}
+.s2{display:inline-block;padding:2px 7px;border-radius:9px;font-size:10px;font-weight:700;background:#fff0e0;color:#c85e00}
+.s3{display:inline-block;padding:2px 7px;border-radius:9px;font-size:10px;font-weight:700;background:#fffbdd;color:#8a6500}
+.s4{display:inline-block;padding:2px 7px;border-radius:9px;font-size:10px;font-weight:700;background:#e8f5e9;color:#2e844a}
+.sn{display:inline-block;padding:2px 7px;border-radius:9px;font-size:10px;font-weight:700;background:#eee;color:#666}
+.gvh{color:#a61c00;font-weight:700}.gh{color:#c23934;font-weight:700}.gm{color:#ff6900;font-weight:700}.gl{color:#2e844a}
+.up{color:#c23934;font-weight:600}.dn{color:#2e844a;font-weight:600}.fl{color:#888}
+.bar-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cb{background:white;border-radius:10px;padding:16px 18px;box-shadow:0 2px 6px rgba(0,0,0,.07)}
+.cb h4{font-size:12px;font-weight:700;color:#444;margin-bottom:11px}
+.brow{margin-bottom:7px}
+.blbl{display:flex;justify-content:space-between;font-size:11px;color:#555;margin-bottom:2px}
+.btrk{background:#e8f0fe;border-radius:4px;height:15px;overflow:hidden}
+.btrk.or-trk{background:#ffe0cc}
+.bfil{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:5px;font-size:10px;font-weight:700;color:white;min-width:20px}
+.b1{background:linear-gradient(90deg,#032d60,#0070d2)}.b2{background:linear-gradient(90deg,#ff6900,#ffa64d)}
+.b3{background:linear-gradient(90deg,#2e844a,#5cb878)}.b4{background:linear-gradient(90deg,#c23934,#e07070)}
+.b5{background:linear-gradient(90deg,#7b5ea7,#b09acc)}.b6{background:linear-gradient(90deg,#006e96,#4ba3e0)}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ins{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 6px rgba(0,0,0,.07);border-left:4px solid}
+.ins.al{border-color:#c23934}.ins.wn{border-color:#ff6900}.ins.in{border-color:#0070d2}.ins.gd{border-color:#2e844a}
+.ins .it{font-size:12px;font-weight:700;margin-bottom:5px;color:#1a1a2e}
+.ins p{font-size:12px;color:#444;line-height:1.5}
+.rank{color:#aaa;font-size:11px;font-weight:700;text-align:center}
+.pill{display:inline-block;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:600}
+.pk{background:#e3eeff;color:#032d60}.pp{background:#fde8e8;color:#a61c00}
+.pd{background:#e3f5e9;color:#2e844a}.po{background:#fff0e0;color:#c85e00}
+.pw{color:#888;font-size:10px;font-style:italic}
+.note{font-size:11px;color:#888;margin:4px 0 0 4px}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.cmp-card{background:white;border-radius:10px;padding:18px 20px;box-shadow:0 2px 6px rgba(0,0,0,.07)}
+.cmp-card h3{font-size:14px;font-weight:700;margin-bottom:14px}
+.cmp-card.es h3{color:#0070d2}.cmp-card.jb h3{color:#ff6900}
+.rec-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0}
+.rec-row:last-child{border-bottom:none}
+.rec-num{width:24px;height:24px;border-radius:50%;background:#032d60;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rec-num.or{background:#ff6900}
+.rec-body .rt{font-size:12px;font-weight:700;color:#1a1a2e;margin-bottom:2px}
+.rec-body .rd{font-size:11px;color:#666}
+.itag{display:inline-block;padding:1px 6px;border-radius:5px;font-size:10px;margin:1px}
+.it-r{background:#fde8e8;color:#a61c00}.it-o{background:#fff0e0;color:#c85e00}
+.it-b{background:#e3eeff;color:#0070d2}.it-g{background:#f0f0f0;color:#555}
+/* ── ES TCD styles ── */
+.sum-bar{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:11px;margin-bottom:20px}
+.sb{background:white;border-radius:10px;padding:13px 15px;box-shadow:0 2px 6px rgba(0,0,0,.07);border-top:4px solid}
+.sb .sl{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#777}
+.sb .sv{font-size:22px;font-weight:700;margin:4px 0 2px}
+.sb .sh{font-size:10px;color:#999}
+.t1{border-color:#c23934}.t1 .sv{color:#c23934}
+.t2{border-color:#ff6900}.t2 .sv{color:#ff6900}
+.t3{border-color:#0070d2}.t3 .sv{color:#0070d2}
+.t4{border-color:#7b5ea7}.t4 .sv{color:#7b5ea7}
+.t5{border-color:#2e844a}.t5 .sv{color:#2e844a}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.cat{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 6px rgba(0,0,0,.07);border-left:5px solid}
+.cat.c-def{border-color:#c23934}.cat.c-prod{border-color:#ff6900}.cat.c-unc{border-color:#ccc}
+.cat h4{font-size:12px;font-weight:700;margin-bottom:8px}
+.cat.c-def h4{color:#c23934}.cat.c-prod h4{color:#ff6900}.cat.c-unc h4{color:#888}
+.cat-pct{font-size:28px;font-weight:700;margin-bottom:4px}
+.cat.c-def .cat-pct{color:#c23934}.cat.c-prod .cat-pct{color:#ff6900}.cat.c-unc .cat-pct{color:#aaa}
+.cat p{font-size:11px;color:#555;line-height:1.5}
+.miss-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.miss{background:white;border-radius:10px;padding:14px 16px;box-shadow:0 2px 6px rgba(0,0,0,.07);border-left:4px solid #c23934}
+.miss h4{font-size:12px;font-weight:700;color:#c23934;margin-bottom:8px}
+.miss ul{padding-left:16px}.miss li{font-size:12px;color:#444;line-height:1.7}
+.sbc{margin-bottom:7px}
+.sbl{display:flex;justify-content:space-between;font-size:11px;color:#444;margin-bottom:2px}
+.sbtr{background:#e8f0fe;border-radius:3px;height:14px;overflow:hidden}
+.sbfi{height:100%;border-radius:3px}
+.f1{background:linear-gradient(90deg,#c23934,#e07070)}.f2{background:linear-gradient(90deg,#ff6900,#ffa64d)}
+.f3{background:linear-gradient(90deg,#7b5ea7,#b09acc)}.f4{background:linear-gradient(90deg,#0070d2,#4ba3e0)}
+.f5{background:linear-gradient(90deg,#2e844a,#5cb878)}.f6{background:linear-gradient(90deg,#aaa,#ddd)}
+.ins-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.cluster-row{background:white;border-radius:10px;padding:16px 20px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:12px;border-left:6px solid}
+.cluster-row.c1{border-color:#c23934}.cluster-row.c2{border-color:#ff6900}
+.cluster-row.c3{border-color:#0070d2}.cluster-row.c4{border-color:#7b5ea7}.cluster-row.c5{border-color:#2e844a}
+.cr-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:12px;flex-wrap:wrap}
+.cr-title{font-size:14px;font-weight:700}
+.cr-stats{display:flex;gap:16px;flex-wrap:wrap}
+.cr-stat{text-align:center}.cr-stat .v{font-size:16px;font-weight:700}.cr-stat .l{font-size:10px;color:#777;text-transform:uppercase}
+.cr-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cr-action{background:#f7faff;border-radius:7px;padding:9px 11px;border:1px solid #d4e9ff}
+.cr-action .at{font-size:11px;font-weight:700;color:#032d60;margin-bottom:3px}
+.cr-action .ad{font-size:11px;color:#555}
+.badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:10px;font-weight:700}
+.b-rd{background:#fde8e8;color:#a61c00}.b-or{background:#fff0e0;color:#c85e00}
+.b-gn{background:#e8f5e9;color:#2e844a}.b-bl{background:#e3eeff;color:#032d60}.b-pu{background:#f0e8ff;color:#5c2d9e}
+.ip{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700}
+.ip-h{background:#fde8e8;color:#a61c00}.ip-m{background:#fff0e0;color:#c85e00}
+.ip-l{background:#e8f5e9;color:#2e844a}.ip-b{background:#e3eeff;color:#032d60}
+.ep{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600}
+.ep-lo{background:#e8f5e9;color:#2e844a}.ep-me{background:#fffbdd;color:#8a6500}.ep-hi{background:#fde8e8;color:#a61c00}
+.op{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:600;background:#f0f0f0;color:#444}
+.es-cluster-sec{font-size:13px;font-weight:700;color:#032d60;background:#d4e9ff;padding:10px 16px;border-radius:8px;margin:28px 0 14px;border-left:4px solid #0070d2}
+@media(max-width:768px){.bar-grid,.insight-grid,.cmp-grid,.cat-grid,.miss-grid,.ins-grid,.cr-actions{grid-template-columns:1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>MC Engagement — Support Analytics Master Dashboard</h1>
+  <div class="sub">Marketing Cloud · Product &amp; Topic: Email Studio &amp; Journey/Contact/Audience Builder</div>
+  <div class="meta-pills">
+    <span>📅 Feb 1 – Jun 3, 2026</span>
+    <span>📦 25,442 Total Cases</span>
+    <span>📊 5 Reports Consolidated</span>
+    <span>🎯 Leadership Presentation Ready</span>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="active" onclick="showTab('overview',this)">📊 Overview</button>
+  <button onclick="showTab('es',this)">📧 Email Studio</button>
+  <button onclick="showTab('jb',this)">🗺 Journey / CB / AB</button>
+  <button onclick="showTab('es-issues',this)">🔍 ES Common Issues</button>
+  <button onclick="showTab('jb-issues',this)">🔍 JB Common Issues</button>
+
+  <button onclick="showTab('jb-tcd',this)">🎯 JB TCD</button>
+  <button onclick="showTab('es-tcd',this)">🎯 ES TCD</button>
+  <button onclick="showTab('jb-playbook',this)">📖 JB Playbook</button>
+</div>
+
+<!-- ══════════ TAB 1: OVERVIEW ══════════ -->
+<div id="overview" class="tab-content active">
+<div class="container">
+
+  <div class="sec" data-i="📊">Combined KPIs — Both Product &amp; Topic Areas</div>
+  <div class="kpi-row">
+    <div class="kpi bl"><div class="lbl">Total Cases (Both)</div><div class="val">25,442</div><div class="hint">Feb 1 – Jun 3, 2026</div></div>
+    <div class="kpi gn"><div class="lbl">Total Closed</div><div class="val">24,078</div><div class="hint">94.6% combined closure rate</div></div>
+    <div class="kpi rd"><div class="lbl">Total Open</div><div class="val">1,364</div><div class="hint">5.4% currently active</div></div>
+    <div class="kpi pu"><div class="lbl">GUS Escalations</div><div class="val">1,077</div><div class="hint">4.2% combined GUS rate</div></div>
+    <div class="kpi or"><div class="lbl">Email Studio Cases</div><div class="val">18,766</div><div class="hint">73.8% of total volume</div></div>
+    <div class="kpi go"><div class="lbl">JB / CB / AB Cases</div><div class="val">6,676</div><div class="hint">26.2% of total volume</div></div>
+  </div>
+
+  <div class="sec" data-i="⚖️">Side-by-Side Comparison</div>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="num">Email Studio</th>
+          <th class="num">Journey / CB / AB</th>
+          <th class="num">Delta</th>
+          <th>Signal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Total Cases</strong></td><td class="num">18,766</td><td class="num">6,676</td><td class="num">+12,090 ES</td><td>ES is 2.8× higher volume</td></tr>
+        <tr><td><strong>Closure Rate</strong></td><td class="num">95.1%</td><td class="num">93.4%</td><td class="num up">−1.7pp JB</td><td>JB resolves slower overall</td></tr>
+        <tr><td><strong>Avg Days to Close</strong></td><td class="num">6.05 days</td><td class="num">6.90 days</td><td class="num up">+0.85d JB</td><td>JB more complex per case</td></tr>
+        <tr><td><strong>GUS Cases</strong></td><td class="num">761</td><td class="num">316</td><td class="num">–</td><td>ES higher absolute count</td></tr>
+        <tr><td><strong>GUS Rate</strong></td><td class="num">4.1%</td><td class="num">4.7%</td><td class="num up">+0.6pp JB</td><td>JB product bugs more frequent</td></tr>
+        <tr><td><strong>Sev 1 Cases</strong></td><td class="num">1,377 (7.3%)</td><td class="num">708 (10.6%)</td><td class="num up">+3.3pp JB</td><td>JB has higher critical case share</td></tr>
+        <tr><td><strong>Sev 1 GUS Rate</strong></td><td class="num">12.6%</td><td class="num">13.4%</td><td class="num up">+0.8pp JB</td><td>Both high — product bugs drive critical cases</td></tr>
+        <tr><td><strong>Reopened Cases</strong></td><td class="num">1,049 (5.6%)</td><td class="num">363 (5.4%)</td><td class="num">~equal</td><td>Similar reopen rates</td></tr>
+        <tr><td><strong>Mgmt Escalations</strong></td><td class="num">57</td><td class="num">34</td><td class="num">–</td><td>ES higher absolute, JB disqualification rate higher</td></tr>
+        <tr><td><strong>"Not Set" Avg Close</strong></td><td class="num">12.70 days</td><td class="num">14.97 days</td><td class="num up">+2.3d JB</td><td>Both 2× the average — severity must be enforced</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec" data-i="📈">Monthly Volume Trend — Both Topics</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Month</th><th class="num">ES Cases</th><th class="num">JB Cases</th><th class="num">Combined</th><th class="num">ES MoM</th><th class="num">JB MoM</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Feb 2026</strong></td><td class="num">4,790</td><td class="num">1,551</td><td class="num">6,341</td><td class="fl">–</td><td class="fl">–</td></tr>
+        <tr><td><strong>Mar 2026</strong></td><td class="num">4,796</td><td class="num">1,745</td><td class="num">6,541</td><td class="up">+0.1%</td><td class="up">+12.5%</td></tr>
+        <tr><td><strong>Apr 2026</strong></td><td class="num">4,732</td><td class="num">1,642</td><td class="num">6,374</td><td class="dn">−1.3%</td><td class="dn">−5.9%</td></tr>
+        <tr><td><strong>May 2026</strong></td><td class="num">4,015</td><td class="num">1,576</td><td class="num">5,591</td><td class="up">−15.1%</td><td class="dn">−4.0%</td></tr>
+        <tr><td><strong>Jun 2026</strong> <em style="font-size:10px;color:#aaa">(3 days)</em></td><td class="num">433</td><td class="num">162</td><td class="num">595</td><td class="fl">partial</td><td class="fl">partial</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAL</td><td class="num">18,766</td><td class="num">6,676</td><td class="num">25,442</td><td></td><td></td></tr></tfoot>
+    </table>
+  </div>
+  <p class="note">⚠ JB spiked +12.5% in March (ES was flat). ES dropped −15.1% in May. Different product cycles/release patterns driving divergence.</p>
+
+  <div class="sec" data-i="💡">Key Insights</div>
+  <div class="insight-grid">
+    <div class="ins al"><div class="it">🚨 JB Has Higher Product Bug Density</div><p>JB GUS rate (4.7%) exceeds ES (4.1%) despite lower volume. Sev 1 GUS rate 13.4% vs 12.6% — JB product complexity drives more engineering investigations per case.</p></div>
+    <div class="ins al"><div class="it">⚠ IST Carries Disproportionate Sev 1 Load</div><p>IST handles 30%+ of Sev 1 cases in both ES (417/1,377) and JB (220/708) — the highest of any region. Staffing and escalation paths for IST must be reviewed.</p></div>
+    <div class="ins wn"><div class="it">📉 May Volume Dropped −15% for ES</div><p>ES saw a significant 4,732→4,015 drop in May. JB only dropped 4%. Investigate correlation with product releases or known issue resolutions unique to Email Studio.</p></div>
+    <div class="ins wn"><div class="it">🕐 "Not Set" Severity = 2× Closure Time</div><p>ES "Not Set" cases average 12.7 days, JB "Not Set" cases average 14.97 days — both more than double the topic average. Severity enforcement at case creation is critical.</p></div>
+    <div class="ins in"><div class="it">📊 63% of Cases Are Self-Service Deflectable</div><p>The #1 sub-cause across both products is "User needs instructions/training" (ES: 59.4% / JB: 65.9%). Improved help content and in-product guidance could deflect thousands of cases.</p></div>
+    <div class="ins gd"><div class="it">✅ Strong Overall Closure Performance</div><p>Combined closure rate of 94.6% across 25,442 cases over 4 months demonstrates strong team execution. ES (95.1%) leads JB (93.4%) on closure efficiency.</p></div>
+  </div>
+
+  <div class="sec" data-i="🎯">Top Recommendations</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Recommendation</th><th>Area</th><th>Impact</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">1</td><td><strong>Mandate severity at case creation via validation rules</strong></td><td>Both</td><td>Reduce avg close time by 6–9 days for unset cases</td><td><span class="pill pp">Critical</span></td></tr>
+        <tr><td class="rank">2</td><td><strong>Build self-service content for top training gap topics</strong> (Automation Studio, Journey Errors, Data Extensions)</td><td>ES + JB</td><td>Deflect up to 44% of ES volume, 66% of JB volume</td><td><span class="pill pp">Critical</span></td></tr>
+        <tr><td class="rank">3</td><td><strong>Review IST Sev 1 staffing &amp; escalation paths</strong> — IST carries 30%+ of Sev 1 across both products</td><td>Both</td><td>Reduce critical case aging and GUS escalations from IST</td><td><span class="pill pp">Critical</span></td></tr>
+        <tr><td class="rank">4</td><td><strong>GUS engagement for Automation Studio</strong> — 128 GUS cases, 8.7% rate, Sev 1 GUS 24.7%</td><td>ES</td><td>Product fix would eliminate largest single cluster</td><td><span class="pill po">High</span></td></tr>
+        <tr><td class="rank">5</td><td><strong>Prioritize Wait/Delay &amp; Journey Errors GUS items</strong> — both 8–9% GUS rate</td><td>JB</td><td>High Sev 1 counts indicate production impact</td><td><span class="pill po">High</span></td></tr>
+        <tr><td class="rank">6</td><td><strong>GDPR/CCPA compliance review for Contact Deletion</strong> — 341 cases, 7.6% GUS, privacy risk flagged</td><td>JB</td><td>Legal/compliance exposure if deletion failures continue</td><td><span class="pill po">High</span></td></tr>
+        <tr><td class="rank">7</td><td><strong>Investigate May ES volume drop</strong> to confirm cause and sustain if product-fix-driven</td><td>ES</td><td>Validate if improvement is sustainable or temporary</td><td><span class="pill pd">Medium</span></td></tr>
+        <tr><td class="rank">8</td><td><strong>Sev 2 queue prioritization review</strong> — both ES and JB Sev 2 close slower than Sev 1</td><td>Both</td><td>Correct SLA inversion between Sev 1 and Sev 2</td><td><span class="pill pd">Medium</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════ TAB 2: EMAIL STUDIO ══════════ -->
+<div id="es" class="tab-content">
+<div class="container">
+
+  <div class="sec" data-i="📋">Overall KPIs — Engagement-Email Studio</div>
+  <div class="kpi-row">
+    <div class="kpi bl"><div class="lbl">Total Cases</div><div class="val">18,766</div><div class="hint">Feb 1 – Jun 3, 2026</div></div>
+    <div class="kpi gn"><div class="lbl">Cases Closed</div><div class="val">17,840</div><div class="hint">Closure Rate: 95.1%</div></div>
+    <div class="kpi rd"><div class="lbl">Open / Active</div><div class="val">926</div><div class="hint">4.9% currently open</div></div>
+    <div class="kpi bl"><div class="lbl">Avg Days to Close</div><div class="val">6.05</div><div class="hint">Across all closed cases</div></div>
+    <div class="kpi pu"><div class="lbl">Cases → GUS</div><div class="val">761</div><div class="hint">4.1% GUS rate</div></div>
+    <div class="kpi rd"><div class="lbl">Reopened Cases</div><div class="val">1,049</div><div class="hint">5.6% reopen rate</div></div>
+    <div class="kpi or"><div class="lbl">Sev 1 – Critical</div><div class="val">1,377</div><div class="hint">7.3% of total volume</div></div>
+    <div class="kpi go"><div class="lbl">Mgmt Escalations</div><div class="val">57</div><div class="hint">Qualified + Heightened + Completed</div></div>
+  </div>
+
+  <div class="sec" data-i="🔴">Severity Distribution &amp; Closure Analytics</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Severity</th><th class="num">Cases</th><th class="num">%</th><th class="num">Closed</th><th class="num">Open</th><th class="num">Closure%</th><th class="num">Avg Days</th><th class="num">Max Days</th><th class="num">GUS</th><th class="num">GUS%</th></tr></thead>
+      <tbody>
+        <tr><td><span class="s1">Sev 1 – Critical</span></td><td class="num">1,377</td><td class="pct">7.3%</td><td class="num">1,298</td><td class="num">79</td><td class="num">94.3%</td><td class="num"><strong>6.98</strong></td><td class="num">76.94</td><td class="num">173</td><td class="num gh"><strong>12.6%</strong></td></tr>
+        <tr><td><span class="s2">Sev 2 – Urgent</span></td><td class="num">4,150</td><td class="pct">22.1%</td><td class="num">3,897</td><td class="num">253</td><td class="num">93.9%</td><td class="num up"><strong>7.59</strong></td><td class="num">85.66</td><td class="num">252</td><td class="num">6.1%</td></tr>
+        <tr><td><span class="s3">Sev 3 – High</span></td><td class="num">3,832</td><td class="pct">20.4%</td><td class="num">3,592</td><td class="num">240</td><td class="num">93.7%</td><td class="num"><strong>7.39</strong></td><td class="num">114.84</td><td class="num">164</td><td class="num">4.3%</td></tr>
+        <tr><td><span class="s4">Sev 4 – Medium</span></td><td class="num">8,741</td><td class="pct">46.6%</td><td class="num">8,452</td><td class="num">289</td><td class="num">96.7%</td><td class="num"><strong>4.14</strong></td><td class="num">107.63</td><td class="num">172</td><td class="num">2.0%</td></tr>
+        <tr><td><span class="sn">Not Set</span></td><td class="num">666</td><td class="pct">3.6%</td><td class="num">601</td><td class="num">65</td><td class="num">90.2%</td><td class="num up"><strong>12.70</strong></td><td class="num">67.78</td><td class="num">–</td><td class="num">–</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAL</td><td class="num">18,766</td><td class="pct">100%</td><td class="num">17,840</td><td class="num">926</td><td class="num">95.1%</td><td class="num">6.05</td><td></td><td class="num">761</td><td class="num">4.1%</td></tr></tfoot>
+    </table>
+  </div>
+  <p class="note">⚠ Sev 2 closes slower than Sev 1 (7.59 vs 6.98 days) — queue prioritization gap. "Not Set" = 12.70 days, 2× the average.</p>
+
+  <div class="sec" data-i="📈">Monthly Volume Trend</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Month</th><th class="num">Total</th><th class="num">MoM</th><th class="num">Sev 1</th><th class="num">Sev 2</th><th class="num">Sev 3</th><th class="num">Sev 4</th><th class="num">Not Set</th><th class="num">Closed</th><th class="num">Avg Days</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Feb 2026</strong></td><td class="num">4,790</td><td class="fl">–</td><td class="num">368</td><td class="num">1,162</td><td class="num">1,077</td><td class="num">2,080</td><td class="num">103</td><td class="num">4,789</td><td class="num">6.56</td></tr>
+        <tr><td><strong>Mar 2026</strong></td><td class="num">4,796</td><td class="up">+0.1%</td><td class="num">313</td><td class="num">1,102</td><td class="num">1,025</td><td class="num">2,172</td><td class="num">184</td><td class="num">4,790</td><td class="num">6.66</td></tr>
+        <tr><td><strong>Apr 2026</strong></td><td class="num">4,732</td><td class="dn">−1.3%</td><td class="num">363</td><td class="num">988</td><td class="num">864</td><td class="num">2,329</td><td class="num">188</td><td class="num">4,703</td><td class="num">6.26</td></tr>
+        <tr><td><strong>May 2026</strong></td><td class="num">4,015</td><td class="up">−15.1%</td><td class="num">304</td><td class="num">808</td><td class="num">771</td><td class="num">1,951</td><td class="num">181</td><td class="num">3,398</td><td class="num">4.43</td></tr>
+        <tr><td><strong>Jun 2026</strong> <em style="font-size:10px;color:#aaa">(3d)</em></td><td class="num">433</td><td class="fl">partial</td><td class="num">29</td><td class="num">90</td><td class="num">95</td><td class="num">209</td><td class="num">10</td><td class="num">160</td><td class="num">0.16*</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAL</td><td class="num">18,766</td><td></td><td class="num">1,377</td><td class="num">4,150</td><td class="num">3,832</td><td class="num">8,741</td><td class="num">666</td><td class="num">17,840</td><td class="num">6.05</td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="sec" data-i="🌍">Regional Distribution</div>
+  <div class="bar-grid">
+    <div class="cb"><h4>All Cases by Region</h4>
+      <div class="brow"><div class="blbl"><span>AMER-EST</span><span>4,436 (23.6%)</span></div><div class="btrk"><div class="bfil b1" style="width:100%">4,436</div></div></div>
+      <div class="brow"><div class="blbl"><span>AMER-PST</span><span>4,375 (23.3%)</span></div><div class="btrk"><div class="bfil b1" style="width:98.6%">4,375</div></div></div>
+      <div class="brow"><div class="blbl"><span>EMEA</span><span>3,845 (20.5%)</span></div><div class="btrk"><div class="bfil b6" style="width:86.7%">3,845</div></div></div>
+      <div class="brow"><div class="blbl"><span>IST</span><span>2,436 (13.0%)</span></div><div class="btrk"><div class="bfil b5" style="width:54.9%">2,436</div></div></div>
+      <div class="brow"><div class="blbl"><span>LATAM</span><span>1,484 (7.9%)</span></div><div class="btrk"><div class="bfil b3" style="width:33.5%">1,484</div></div></div>
+      <div class="brow"><div class="blbl"><span>APAC</span><span>1,165 (6.2%)</span></div><div class="btrk"><div class="bfil b2" style="width:26.3%">1,165</div></div></div>
+      <div class="brow"><div class="blbl"><span>JP</span><span>1,013 (5.4%)</span></div><div class="btrk"><div class="bfil b4" style="width:22.8%">1,013</div></div></div>
+    </div>
+    <div class="cb"><h4>Sev 1 – Critical Cases by Region</h4>
+      <div class="brow"><div class="blbl"><span>IST</span><span>417 (30.3%) ⚠</span></div><div class="btrk"><div class="bfil b4" style="width:100%">417</div></div></div>
+      <div class="brow"><div class="blbl"><span>EMEA</span><span>281 (20.4%)</span></div><div class="btrk"><div class="bfil b4" style="width:67.4%">281</div></div></div>
+      <div class="brow"><div class="blbl"><span>AMER-PST</span><span>235 (17.1%)</span></div><div class="btrk"><div class="bfil b4" style="width:56.4%">235</div></div></div>
+      <div class="brow"><div class="blbl"><span>AMER-EST</span><span>233 (16.9%)</span></div><div class="btrk"><div class="bfil b4" style="width:55.9%">233</div></div></div>
+      <div class="brow"><div class="blbl"><span>LATAM</span><span>114 (8.3%)</span></div><div class="btrk"><div class="bfil b4" style="width:27.3%">114</div></div></div>
+      <div class="brow"><div class="blbl"><span>APAC</span><span>86 (6.2%)</span></div><div class="btrk"><div class="bfil b4" style="width:20.6%">86</div></div></div>
+      <div class="brow"><div class="blbl"><span>JP</span><span>11 (0.8%)</span></div><div class="btrk"><div class="bfil b4" style="width:2.6%">11</div></div></div>
+      <p class="note" style="margin-top:8px">⚠ IST = 30.3% of all Sev 1 — highest of any region.</p>
+    </div>
+  </div>
+
+  <div class="sec" data-i="🐛">GUS Investigation Analysis</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Severity</th><th class="num">Cases</th><th class="num">GUS Count</th><th class="num">GUS Rate</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr><td><span class="s1">Sev 1 – Critical</span></td><td class="num">1,377</td><td class="num"><strong>173</strong></td><td class="num gh"><strong>12.6%</strong></td><td>Highest GUS rate — product bugs drive critical outages</td></tr>
+        <tr><td><span class="s2">Sev 2 – Urgent</span></td><td class="num">4,150</td><td class="num"><strong>252</strong></td><td class="num">6.1%</td><td>Highest absolute GUS count</td></tr>
+        <tr><td><span class="s3">Sev 3 – High</span></td><td class="num">3,832</td><td class="num">164</td><td class="num">4.3%</td><td>Product bugs contributing to high severity</td></tr>
+        <tr><td><span class="s4">Sev 4 – Medium</span></td><td class="num">8,741</td><td class="num">172</td><td class="num">2.0%</td><td>Low GUS rate — mostly how-to / config queries</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAL</td><td class="num">18,100</td><td class="num">761</td><td class="num">4.1%</td><td></td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="sec" data-i="📊">Case Status Breakdown</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Status</th><th class="num">Count</th><th class="num">% of Total</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>✅ Closed</td><td class="num"><strong>17,819</strong></td><td class="num">94.9%</td><td>Primary resolution status</td></tr>
+        <tr><td>❓ Need More Information</td><td class="num">284</td><td class="num">1.5%</td><td>Awaiting customer response</td></tr>
+        <tr><td>💡 Solution Provided</td><td class="num">257</td><td class="num">1.4%</td><td>Solution shared — pending confirmation</td></tr>
+        <tr><td>🔧 Working</td><td class="num">250</td><td class="num">1.3%</td><td>Actively being worked</td></tr>
+        <tr><td>🚚 Delivery</td><td class="num">58</td><td class="num">0.3%</td><td></td></tr>
+        <tr><td>🆕 New</td><td class="num">39</td><td class="num">0.2%</td><td>Pending assignment</td></tr>
+        <tr><td>🔍 Qualification</td><td class="num">28</td><td class="num">0.1%</td><td></td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAL</td><td class="num">18,766</td><td class="num">100%</td><td></td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="sec" data-i="⬆️">Management Escalation Breakdown</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Escalation Status</th><th class="num">Count</th><th class="num">% of Escalated</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill pk">Qualified</span></td><td class="num">27</td><td class="num">47.4%</td><td>Actively escalated to management</td></tr>
+        <tr><td><span class="pill pd">Escalation Completed</span></td><td class="num">17</td><td class="num">29.8%</td><td>Resolved via management involvement</td></tr>
+        <tr><td><span class="pill po">Heightened</span></td><td class="num">4</td><td class="num">7.0%</td><td>Heightened visibility</td></tr>
+        <tr><td><span class="pill pk">Heightened Completed</span></td><td class="num">3</td><td class="num">5.3%</td><td>Heightened — resolved</td></tr>
+        <tr><td><span class="pill pw">Disqualified</span></td><td class="num">6</td><td class="num">10.5%</td><td>Reviewed but not escalated</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAL ESCALATION RECORDS</td><td class="num">57</td><td class="num">100%</td><td></td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="sec" data-i="⏳">Open Case Aging (926 open cases)</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Severity</th><th class="num">Open</th><th class="num">% of Open</th><th>Risk Level</th></tr></thead>
+      <tbody>
+        <tr><td><span class="s1">Sev 1</span></td><td class="num">79</td><td class="num">8.5%</td><td style="color:#c23934;font-weight:700">🔴 HIGH RISK — Immediate review needed</td></tr>
+        <tr><td><span class="s2">Sev 2</span></td><td class="num">253</td><td class="num">27.3%</td><td style="color:#ff6900;font-weight:700">🟠 MEDIUM-HIGH — Daily aging review</td></tr>
+        <tr><td><span class="s3">Sev 3</span></td><td class="num">240</td><td class="num">25.9%</td><td style="color:#c6951a;font-weight:700">🟡 MEDIUM — Weekly review</td></tr>
+        <tr><td><span class="s4">Sev 4</span></td><td class="num">289</td><td class="num">31.2%</td><td style="color:#2e844a">🟢 LOW — Routine queue management</td></tr>
+        <tr><td><span class="sn">Not Set</span></td><td class="num">65</td><td class="num">7.0%</td><td style="color:#c23934">⚠ Must set severity — at risk of deprioritization</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAL OPEN</td><td class="num">926</td><td class="num">100%</td><td></td></tr></tfoot>
+    </table>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════ TAB 3: JOURNEY / CB / AB ══════════ -->
+<div id="jb" class="tab-content">
+<div class="container">
+
+  <div class="sec or" data-i="📋">Overall KPIs — Engagement-Journey/Contact/Audience Builder</div>
+  <div class="kpi-row">
+    <div class="kpi or"><div class="lbl">Total Cases</div><div class="val">6,676</div><div class="hint">Feb 1 – Jun 3, 2026</div></div>
+    <div class="kpi gn"><div class="lbl">Cases Closed</div><div class="val">6,238</div><div class="hint">Closure Rate: 93.4%</div></div>
+    <div class="kpi rd"><div class="lbl">Open / Active</div><div class="val">438</div><div class="hint">6.6% currently open</div></div>
+    <div class="kpi or"><div class="lbl">Avg Days to Close</div><div class="val">6.90</div><div class="hint">Across all closed cases</div></div>
+    <div class="kpi pu"><div class="lbl">Cases → GUS</div><div class="val">316</div><div class="hint">4.7% GUS rate</div></div>
+    <div class="kpi rd"><div class="lbl">Reopened Cases</div><div class="val">363</div><div class="hint">5.4% reopen rate</div></div>
+    <div class="kpi rd"><div class="lbl">Sev 1 – Critical</div><div class="val">708</div><div class="hint">10.6% of total volume</div></div>
+    <div class="kpi go"><div class="lbl">Mgmt Escalations</div><div class="val">34</div><div class="hint">Qualified + Heightened + Completed</div></div>
+  </div>
+
+  <div class="sec or" data-i="🔴">Severity Distribution &amp; Closure Analytics</div>
+  <div class="tw">
+    <table>
+      <thead class="or-head"><tr><th>Severity</th><th class="num">Cases</th><th class="num">%</th><th class="num">Closed</th><th class="num">Open</th><th class="num">Closure%</th><th class="num">Avg Days</th><th class="num">Max Days</th><th class="num">GUS</th><th class="num">GUS%</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td><span class="s1">Sev 1 – Critical</span></td><td class="num">708</td><td class="pct">10.6%</td><td class="num">672</td><td class="num">36</td><td class="num">94.9%</td><td class="num"><strong>7.04</strong></td><td class="num">64.15</td><td class="num">95</td><td class="num gh"><strong>13.4%</strong></td></tr>
+        <tr><td><span class="s2">Sev 2 – Urgent</span></td><td class="num">1,659</td><td class="pct">24.8%</td><td class="num">1,529</td><td class="num">130</td><td class="num">92.2%</td><td class="num up"><strong>8.07</strong></td><td class="num">63.58</td><td class="num">114</td><td class="num">6.9%</td></tr>
+        <tr><td><span class="s3">Sev 3 – High</span></td><td class="num">1,266</td><td class="pct">19.0%</td><td class="num">1,177</td><td class="num">89</td><td class="num">93.0%</td><td class="num"><strong>7.98</strong></td><td class="num">56.14</td><td class="num">63</td><td class="num">5.0%</td></tr>
+        <tr><td><span class="s4">Sev 4 – Medium</span></td><td class="num">2,620</td><td class="pct">39.3%</td><td class="num">2,528</td><td class="num">92</td><td class="num">96.5%</td><td class="num"><strong>4.43</strong></td><td class="num">56.04</td><td class="num">44</td><td class="num">1.7%</td></tr>
+        <tr><td><span class="sn">Not Set</span></td><td class="num">423</td><td class="pct">6.3%</td><td class="num">332</td><td class="num">91</td><td class="num">78.5%</td><td class="num up"><strong>14.97</strong></td><td class="num">91.86</td><td class="num">–</td><td class="num">–</td></tr>
+      </tbody>
+      <tfoot class="or-foot"><tr><td>TOTAL</td><td class="num">6,676</td><td class="pct">100%</td><td class="num">6,238</td><td class="num">438</td><td class="num">93.4%</td><td class="num">6.90</td><td></td><td class="num">316</td><td class="num">4.7%</td></tr></tfoot>
+    </table>
+  </div>
+  <p class="note">⚠ Sev 2 &amp; 3 both close slower than Sev 1. "Not Set" cases = lowest closure rate (78.5%) and 14.97 day average — nearly 15 days.</p>
+
+  <div class="sec or" data-i="📈">Monthly Volume Trend</div>
+  <div class="tw">
+    <table>
+      <thead class="or-head"><tr><th>Month</th><th class="num">Total</th><th class="num">MoM</th><th class="num">Sev 1</th><th class="num">Sev 2</th><th class="num">Sev 3</th><th class="num">Sev 4</th><th class="num">Not Set</th><th class="num">Closed</th><th class="num">Avg Days</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td><strong>Feb 2026</strong></td><td class="num">1,551</td><td class="fl">–</td><td class="num">161</td><td class="num">412</td><td class="num">337</td><td class="num">579</td><td class="num">62</td><td class="num">1,551</td><td class="num">7.42</td></tr>
+        <tr><td><strong>Mar 2026</strong></td><td class="num">1,745</td><td class="up">+12.5%</td><td class="num">184</td><td class="num">427</td><td class="num">359</td><td class="num">667</td><td class="num">108</td><td class="num">1,742</td><td class="num">7.43</td></tr>
+        <tr><td><strong>Apr 2026</strong></td><td class="num">1,642</td><td class="dn">−5.9%</td><td class="num">179</td><td class="num">386</td><td class="num">289</td><td class="num">680</td><td class="num">108</td><td class="num">1,623</td><td class="num">7.19</td></tr>
+        <tr><td><strong>May 2026</strong></td><td class="num">1,576</td><td class="dn">−4.0%</td><td class="num">169</td><td class="num">380</td><td class="num">249</td><td class="num">645</td><td class="num">133</td><td class="num">1,281</td><td class="num">5.08</td></tr>
+        <tr><td><strong>Jun 2026</strong> <em style="font-size:10px;color:#aaa">(3d)</em></td><td class="num">162</td><td class="fl">partial</td><td class="num">15</td><td class="num">54</td><td class="num">32</td><td class="num">49</td><td class="num">12</td><td class="num">41</td><td class="num">0.36*</td></tr>
+      </tbody>
+      <tfoot class="or-foot"><tr><td>TOTAL</td><td class="num">6,676</td><td></td><td class="num">708</td><td class="num">1,659</td><td class="num">1,266</td><td class="num">2,620</td><td class="num">423</td><td class="num">6,238</td><td class="num">6.90</td></tr></tfoot>
+    </table>
+  </div>
+  <p class="note">Mar peak +12.5% warrants investigation — product release or seasonal spike.</p>
+
+  <div class="sec or" data-i="🌍">Regional Distribution</div>
+  <div class="bar-grid">
+    <div class="cb"><h4>All Cases by Region</h4>
+      <div class="brow"><div class="blbl"><span>EMEA</span><span>1,627 (24.4%) ⚠</span></div><div class="btrk or-trk"><div class="bfil b2" style="width:100%">1,627</div></div></div>
+      <div class="brow"><div class="blbl"><span>AMER-PST</span><span>1,323 (19.8%)</span></div><div class="btrk or-trk"><div class="bfil b1" style="width:81.3%">1,323</div></div></div>
+      <div class="brow"><div class="blbl"><span>AMER-EST</span><span>1,292 (19.4%)</span></div><div class="btrk or-trk"><div class="bfil b1" style="width:79.4%">1,292</div></div></div>
+      <div class="brow"><div class="blbl"><span>IST</span><span>1,026 (15.4%)</span></div><div class="btrk or-trk"><div class="bfil b5" style="width:63.1%">1,026</div></div></div>
+      <div class="brow"><div class="blbl"><span>LATAM</span><span>725 (10.9%)</span></div><div class="btrk or-trk"><div class="bfil b3" style="width:44.6%">725</div></div></div>
+      <div class="brow"><div class="blbl"><span>APAC</span><span>470 (7.0%)</span></div><div class="btrk or-trk"><div class="bfil b2" style="width:28.9%">470</div></div></div>
+      <div class="brow"><div class="blbl"><span>JP</span><span>212 (3.2%)</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:13.0%">212</div></div></div>
+      <p class="note" style="margin-top:8px">⚠ Unlike ES (AMER leads), EMEA is #1 for JB — unique adoption pattern.</p>
+    </div>
+    <div class="cb"><h4>Sev 1 – Critical Cases by Region</h4>
+      <div class="brow"><div class="blbl"><span>IST</span><span>220 (31.1%) ⚠</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:100%">220</div></div></div>
+      <div class="brow"><div class="blbl"><span>EMEA</span><span>163 (23.0%)</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:74.1%">163</div></div></div>
+      <div class="brow"><div class="blbl"><span>AMER-PST</span><span>103 (14.5%)</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:46.8%">103</div></div></div>
+      <div class="brow"><div class="blbl"><span>AMER-EST</span><span>100 (14.1%)</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:45.5%">100</div></div></div>
+      <div class="brow"><div class="blbl"><span>LATAM</span><span>68 (9.6%)</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:30.9%">68</div></div></div>
+      <div class="brow"><div class="blbl"><span>APAC</span><span>48 (6.8%)</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:21.8%">48</div></div></div>
+    </div>
+  </div>
+
+  <div class="sec or" data-i="🐛">GUS Investigation Analysis</div>
+  <div class="tw">
+    <table>
+      <thead class="or-head"><tr><th>Severity</th><th class="num">Cases</th><th class="num">GUS Count</th><th class="num">GUS Rate</th><th>Interpretation</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td><span class="s1">Sev 1 – Critical</span></td><td class="num">708</td><td class="num"><strong>95</strong></td><td class="num gh"><strong>13.4%</strong></td><td>Highest GUS rate — complex product bugs in JB workflows</td></tr>
+        <tr><td><span class="s2">Sev 2 – Urgent</span></td><td class="num">1,659</td><td class="num"><strong>114</strong></td><td class="num">6.9%</td><td>Highest absolute GUS count for JB</td></tr>
+        <tr><td><span class="s3">Sev 3 – High</span></td><td class="num">1,266</td><td class="num">63</td><td class="num">5.0%</td><td>JB Sev 3 GUS rate exceeds ES Sev 3 (5.0% vs 4.3%)</td></tr>
+        <tr><td><span class="s4">Sev 4 – Medium</span></td><td class="num">2,620</td><td class="num">44</td><td class="num">1.7%</td><td>Low GUS — routine config/how-to</td></tr>
+      </tbody>
+      <tfoot class="or-foot"><tr><td>TOTAL</td><td class="num">6,253</td><td class="num">316</td><td class="num">4.7%</td><td></td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="sec or" data-i="📊">Case Status Breakdown</div>
+  <div class="tw">
+    <table>
+      <thead class="or-head"><tr><th>Status</th><th class="num">Count</th><th class="num">%</th><th>Notes</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td>✅ Closed</td><td class="num"><strong>6,230</strong></td><td class="num">93.3%</td><td></td></tr>
+        <tr><td>❓ Need More Information</td><td class="num">127</td><td class="num">1.9%</td><td>Awaiting customer response</td></tr>
+        <tr><td>💡 Solution Provided</td><td class="num">96</td><td class="num">1.4%</td><td></td></tr>
+        <tr><td>🔧 Working</td><td class="num">82</td><td class="num">1.2%</td><td>Actively being worked</td></tr>
+        <tr><td>🚚 Delivery</td><td class="num">52</td><td class="num">0.8%</td><td></td></tr>
+        <tr><td>🔍 Qualification</td><td class="num">48</td><td class="num">0.7%</td><td></td></tr>
+        <tr><td>🆕 New</td><td class="num">24</td><td class="num">0.4%</td><td>Pending assignment</td></tr>
+      </tbody>
+      <tfoot class="or-foot"><tr><td>TOTAL</td><td class="num">6,676</td><td class="num">100%</td><td></td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="sec or" data-i="⬆️">Management Escalation Breakdown</div>
+  <div class="tw">
+    <table>
+      <thead class="or-head"><tr><th>Escalation Status</th><th class="num">Count</th><th class="num">%</th><th>Meaning</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td><span class="pill pk">Qualified</span></td><td class="num">14</td><td class="num">41.2%</td><td>Actively escalated to management</td></tr>
+        <tr><td><span class="pill pd">Escalation Completed</span></td><td class="num">10</td><td class="num">29.4%</td><td>Resolved via management involvement</td></tr>
+        <tr><td><span class="pill pw">Disqualified</span></td><td class="num">9</td><td class="num">26.5%</td><td>Higher disqualification rate vs ES (10.5%) — more cases flagged but not qualifying</td></tr>
+        <tr><td><span class="pill po">Heightened</span></td><td class="num">1</td><td class="num">2.9%</td><td></td></tr>
+      </tbody>
+      <tfoot class="or-foot"><tr><td>TOTAL</td><td class="num">34</td><td class="num">100%</td><td></td></tr></tfoot>
+    </table>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════ TAB 4: ES COMMON ISSUES ══════════ -->
+<div id="es-issues" class="tab-content">
+<div class="container">
+
+  <div class="sec" data-i="🔍">Email Studio — Common Issue Clusters (Subject-Based)</div>
+  <div class="kpi-row">
+    <div class="kpi bl"><div class="lbl">Total ES Cases</div><div class="val">18,766</div></div>
+    <div class="kpi rd"><div class="lbl">#1 Cluster</div><div class="val">1,478</div><div class="hint">Automation Studio Errors</div></div>
+    <div class="kpi pu"><div class="lbl">Top-13 GUS Total</div><div class="val">335</div><div class="hint">Across identified clusters</div></div>
+    <div class="kpi or"><div class="lbl">Highest GUS Rate</div><div class="val">16.7%</div><div class="hint">Platform Outage / Incidents</div></div>
+  </div>
+
+  <div class="sec" data-i="📋">Master Cluster Ranking</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Cluster Name</th><th class="num">Cases</th><th class="num">% of ES</th><th class="num">GUS</th><th class="num">GUS%</th><th class="num">Sev 1</th><th class="num">Sev 2</th><th class="num">Sev 3</th><th class="num">Sev 4</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">1</td><td><strong>Automation Studio — Errors &amp; Failures</strong></td><td class="num">1,478</td><td class="pct">7.9%</td><td class="num gh"><strong>128</strong></td><td class="num gh"><strong>8.7%</strong></td><td class="num">154</td><td class="num">402</td><td class="num">329</td><td class="num">521</td></tr>
+        <tr><td class="rank">2</td><td><strong>Email Sending &amp; Delivery Failures</strong></td><td class="num">1,322</td><td class="pct">7.0%</td><td class="num gm"><strong>34</strong></td><td class="pct gm">2.6%</td><td class="num">113</td><td class="num">287</td><td class="num">260</td><td class="num">657</td></tr>
+        <tr><td class="rank">3</td><td><strong>Data Extension &amp; Data Management</strong></td><td class="num">1,292</td><td class="pct">6.9%</td><td class="num gm"><strong>55</strong></td><td class="pct gm">4.3%</td><td class="num">95</td><td class="num">244</td><td class="num">274</td><td class="num">573</td></tr>
+        <tr><td class="rank">4</td><td><strong>Login, Access &amp; SSO Issues</strong></td><td class="num">747</td><td class="pct">4.0%</td><td class="num gm"><strong>37</strong></td><td class="pct gm">5.0%</td><td class="num">81</td><td class="num">198</td><td class="num">133</td><td class="num">335</td></tr>
+        <tr><td class="rank">5</td><td><strong>Security — Secrets, Expiry &amp; Notifications</strong></td><td class="num">597</td><td class="pct">3.2%</td><td class="num gl"><strong>5</strong></td><td class="pct gl">0.8%</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+        <tr><td class="rank">6</td><td><strong>Sender Profile, Unsubscribe &amp; Reply Mail</strong></td><td class="num">664</td><td class="pct">3.5%</td><td class="num gl"><strong>8</strong></td><td class="pct gl">1.2%</td><td class="num">60</td><td class="num">172</td><td class="num">139</td><td class="num">292</td></tr>
+        <tr><td class="rank">7</td><td><strong>Setup &amp; Configuration</strong></td><td class="num">583</td><td class="pct">3.1%</td><td class="num gl"><strong>5</strong></td><td class="pct gl">0.9%</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+        <tr><td class="rank">8</td><td><strong>CloudPages</strong></td><td class="num">414</td><td class="pct">2.2%</td><td class="num gm"><strong>19</strong></td><td class="pct gm">4.6%</td><td class="num">39</td><td class="num">104</td><td class="num">74</td><td class="num">178</td></tr>
+        <tr><td class="rank">9</td><td><strong>Content Builder &amp; Email Templates</strong></td><td class="num">407</td><td class="pct">2.2%</td><td class="num gl"><strong>7</strong></td><td class="pct gl">1.7%</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+        <tr><td class="rank">10</td><td><strong>API &amp; Integration</strong></td><td class="num">282</td><td class="pct">1.5%</td><td class="num gm"><strong>9</strong></td><td class="pct gm">3.2%</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+        <tr><td class="rank">11</td><td><strong>Email Deliverability — Bounces &amp; Spam</strong></td><td class="num">200</td><td class="pct">1.1%</td><td class="num gl"><strong>7</strong></td><td class="pct gl">3.5%</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+        <tr><td class="rank">12</td><td><strong>Personalization &amp; Dynamic Content</strong></td><td class="num">152</td><td class="pct">0.8%</td><td class="num gl"><strong>1</strong></td><td class="pct gl">0.7%</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+        <tr><td class="rank">13</td><td><strong>AMPscript</strong></td><td class="num">84</td><td class="pct">0.4%</td><td class="num gl"><strong>4</strong></td><td class="pct gl">4.8%</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+        <tr><td class="rank">⚠</td><td><strong>Platform Outage / Incidents</strong></td><td class="num">96</td><td class="pct">0.5%</td><td class="num gvh"><strong>16</strong></td><td class="pct gvh"><strong>16.7%</strong></td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="2">TOTAL (identified clusters)</td><td class="num">8,318</td><td class="pct">44.3% of ES</td><td class="num">335</td><td class="pct">4.0%</td><td colspan="4"></td></tr></tfoot>
+    </table>
+  </div>
+  <p class="note">Clusters based on recurring subject patterns. 55.7% of cases are diverse individual subjects not forming a named cluster.</p>
+
+  <div class="sec" data-i="🏆">GUS Priority View — Top Clusters by Engineering Impact</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Priority</th><th>Cluster</th><th class="num">GUS Cases</th><th class="num">GUS Rate</th><th class="num">Sev 1 GUS Rate</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill pp">P1</span></td><td><strong>Platform Outage / Incidents</strong></td><td class="num gvh">16</td><td class="num gvh">16.7%</td><td class="num">–</td><td>War room process — real-time R&amp;D bridge needed</td></tr>
+        <tr><td><span class="pill pp">P2</span></td><td><strong>Automation Studio Errors</strong></td><td class="num gh">128</td><td class="num gh">8.7%</td><td class="num">24.7%</td><td>Highest absolute GUS — active GUS items in progress?</td></tr>
+        <tr><td><span class="pill po">P3</span></td><td><strong>Login / SSO Issues</strong></td><td class="num gm">37</td><td class="num gm">5.0%</td><td class="num">–</td><td>Access issues — authentication product team engagement</td></tr>
+        <tr><td><span class="pill po">P4</span></td><td><strong>Data Extension &amp; Data Management</strong></td><td class="num gm">55</td><td class="num gm">4.3%</td><td class="num">–</td><td>Data pipeline bugs — coordinate with data platform team</td></tr>
+        <tr><td><span class="pill po">P5</span></td><td><strong>CloudPages</strong></td><td class="num gm">19</td><td class="num gm">4.6%</td><td class="num">–</td><td>Landing page product bugs — moderate volume, notable GUS rate</td></tr>
+        <tr><td><span class="pill pk">P6</span></td><td><strong>Email Sending &amp; Delivery Failures</strong></td><td class="num gm">34</td><td class="num gl">2.6%</td><td class="num">–</td><td>High volume but low GUS — mostly config. 113 Sev 1 needs monitoring</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec" data-i="💡">Key Insights — ES Common Issues</div>
+  <div class="insight-grid">
+    <div class="ins al"><div class="it">🚨 Automation Studio = Largest Single Cluster</div><p><strong>1,478 cases / 128 GUS / 8.7% GUS rate</strong>. Nearly 1 in 4 critical Automation cases hits a product bug (24.7% Sev 1 GUS rate). This is the #1 engineering escalation driver.</p></div>
+    <div class="ins al"><div class="it">⚠ Platform Outage = Highest GUS Rate (16.7%)</div><p>Only 96 cases but 16 GUS (16.7%) — outage cases are almost certain to expose product-level defects. Real-time bridge process with R&amp;D is critical.</p></div>
+    <div class="ins wn"><div class="it">📦 Top 3 Clusters = 22% of All ES Cases</div><p>Automation (1,478) + Email Sending (1,322) + Data Extension (1,292) = 4,092 cases = 21.8% of total ES volume. Three focused product fixes could materially reduce volume.</p></div>
+    <div class="ins in"><div class="it">🔐 Security/Secrets Cluster = 597 Cases, Low GUS</div><p>597 cases but only 0.8% GUS rate — these are likely customer education issues around secret TTL and package secret rotation. A proactive notification system could eliminate this cluster.</p></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════ TAB 5: JB COMMON ISSUES ══════════ -->
+<div id="jb-issues" class="tab-content">
+<div class="container">
+
+  <div class="sec or" data-i="🔍">Journey/CB/AB — Common Issue Clusters (Subject-Based)</div>
+  <div class="kpi-row">
+    <div class="kpi or"><div class="lbl">Total JB Cases</div><div class="val">6,676</div></div>
+    <div class="kpi rd"><div class="lbl">#1 Cluster Volume</div><div class="val">1,309</div><div class="hint">Contact Builder / AB</div></div>
+    <div class="kpi pu"><div class="lbl">Highest GUS Count</div><div class="val">137</div><div class="hint">Journey Builder (broad)</div></div>
+    <div class="kpi go"><div class="lbl">Highest GUS Rate</div><div class="val">11.0%</div><div class="hint">Package Manager</div></div>
+  </div>
+
+  <div class="sec or" data-i="📋">Master Cluster Ranking</div>
+  <div class="tw">
+    <table>
+      <thead class="or-head"><tr><th>#</th><th>Cluster Name</th><th class="num">Cases</th><th class="num">% of JB</th><th class="num">GUS</th><th class="num">GUS%</th><th class="num">Sev 1</th><th class="num">Sev 2</th><th class="num">Sev 3</th><th class="num">Sev 4</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td class="rank">1</td><td><strong>Contact Builder &amp; Audience Builder</strong></td><td class="num">1,309</td><td class="pct">19.6%</td><td class="num gm"><strong>62</strong></td><td class="pct gm">4.7%</td><td class="num">140</td><td class="num">307</td><td class="num">254</td><td class="num">524</td></tr>
+        <tr><td class="rank">—</td><td><em>Journey Builder — All Issues (broad umbrella)</em></td><td class="num">3,573</td><td class="pct">53.5%</td><td class="num gh"><strong>137</strong></td><td class="pct gh">3.8%</td><td class="num">395</td><td class="num">926</td><td class="num">660</td><td class="num">1,368</td></tr>
+        <tr><td class="rank">2</td><td><strong>Journey — Errors &amp; Hard Errors</strong></td><td class="num">543</td><td class="pct">8.1%</td><td class="num gm"><strong>52</strong></td><td class="pct gm">9.6%</td><td class="num">66</td><td class="num">172</td><td class="num">108</td><td class="num">196</td></tr>
+        <tr><td class="rank">3</td><td><strong>Journey — Email Not Sent / Not Delivered</strong></td><td class="num">467</td><td class="pct">7.0%</td><td class="num gm"><strong>21</strong></td><td class="pct gm">4.5%</td><td class="num">73</td><td class="num">140</td><td class="num">88</td><td class="num">166</td></tr>
+        <tr><td class="rank">4</td><td><strong>Contact Deletion Issues</strong> ⚠ GDPR/CCPA</td><td class="num">341</td><td class="pct">5.1%</td><td class="num gm"><strong>26</strong></td><td class="pct gm">7.6%</td><td class="num">47</td><td class="num">78</td><td class="num">60</td><td class="num">152</td></tr>
+        <tr><td class="rank">5</td><td><strong>Journey Wait, Delay &amp; Throttling Issues</strong></td><td class="num">332</td><td class="pct">5.0%</td><td class="num gm"><strong>29</strong></td><td class="pct gm">8.7%</td><td class="num">49</td><td class="num">113</td><td class="num">54</td><td class="num">116</td></tr>
+        <tr><td class="rank">6</td><td><strong>Journey Entry &amp; Contact Not Entering</strong></td><td class="num">272</td><td class="pct">4.1%</td><td class="num gm"><strong>14</strong></td><td class="pct gm">5.1%</td><td class="num">33</td><td class="num">85</td><td class="num">50</td><td class="num">102</td></tr>
+        <tr><td class="rank">7</td><td><strong>Decision Split &amp; Engagement Split</strong></td><td class="num">235</td><td class="pct">3.5%</td><td class="num gl"><strong>6</strong></td><td class="pct gl">2.6%</td><td class="num">30</td><td class="num">76</td><td class="num">43</td><td class="num">85</td></tr>
+        <tr><td class="rank">8</td><td><strong>Package Manager &amp; Custom Activity</strong></td><td class="num">155</td><td class="pct">2.3%</td><td class="num gm"><strong>17</strong></td><td class="pct gm">11.0%</td><td class="num">20</td><td class="num">43</td><td class="num">33</td><td class="num">58</td></tr>
+        <tr><td class="rank">9</td><td><strong>Journey Exit Criteria Issues</strong></td><td class="num">108</td><td class="pct">1.6%</td><td class="num gl"><strong>1</strong></td><td class="pct gl">0.9%</td><td class="num">14</td><td class="num">30</td><td class="num">19</td><td class="num">43</td></tr>
+        <tr><td class="rank">10</td><td><strong>Journey Activation Issues</strong></td><td class="num">86</td><td class="pct">1.3%</td><td class="num gl"><strong>6</strong></td><td class="pct gl">7.0%</td><td class="num">10</td><td class="num">26</td><td class="num">14</td><td class="num">36</td></tr>
+        <tr><td class="rank">11</td><td><strong>Duplicate Emails in Journey</strong></td><td class="num">55</td><td class="pct">0.8%</td><td class="num gl"><strong>3</strong></td><td class="pct gl">5.5%</td><td class="num">4</td><td class="num">11</td><td class="num">14</td><td class="num">26</td></tr>
+        <tr><td class="rank">⚠</td><td><strong>Platform Outage / Incidents</strong></td><td class="num">12</td><td class="pct">0.2%</td><td class="num gl"><strong>1</strong></td><td class="pct gl">8.3%</td><td class="num">2</td><td class="num">4</td><td class="num">3</td><td class="num">3</td></tr>
+      </tbody>
+      <tfoot class="or-foot"><tr><td colspan="2">TOTAL (sub-clusters excl. broad JB umbrella)</td><td class="num">3,603</td><td class="pct">—</td><td class="num">238</td><td class="pct">—</td><td colspan="4"></td></tr></tfoot>
+    </table>
+  </div>
+  <p class="note">† "Journey Builder — All Issues (broad)" overlaps with sub-clusters 2–11. Sub-cluster rows should not be summed into the broad umbrella.</p>
+
+  <div class="sec or" data-i="🗂">Sub-Cause Classification (JB Classified Cases)</div>
+  <div class="tw">
+    <table>
+      <thead class="or-head"><tr><th>#</th><th>Sub-Cause</th><th>Type</th><th class="num">Cases</th><th class="num">% Classified</th><th class="num">GUS</th><th class="num">GUS%</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td class="rank">1</td><td><strong>User needs instructions or training</strong></td><td><span class="pill pk">Knowledge Gap</span></td><td class="num">2,646</td><td class="pct">65.9%</td><td class="num gl">65</td><td class="pct gl">2.5%</td></tr>
+        <tr><td class="rank">2</td><td><strong>Need better documentation</strong></td><td><span class="pill pk">Knowledge Gap</span></td><td class="num">436</td><td class="pct">10.9%</td><td class="num gl">13</td><td class="pct gl">3.0%</td></tr>
+        <tr><td class="rank">3</td><td><strong>Error message issue</strong></td><td><span class="pill pp">Product Issue</span></td><td class="num">367</td><td class="pct">9.1%</td><td class="num gm">14</td><td class="pct gm">3.8%</td></tr>
+        <tr><td class="rank">4</td><td><strong>Case for issue notification / release</strong></td><td><span class="pill po">Proactive</span></td><td class="num">132</td><td class="pct">3.3%</td><td class="num gl">6</td><td class="pct gl">4.5%</td></tr>
+        <tr><td class="rank">5</td><td><strong>Incident / Maintenance / Outage</strong></td><td><span class="pill pp">Product Issue</span></td><td class="num">88</td><td class="pct">2.2%</td><td class="num gm">13</td><td class="pct gm">14.8%</td></tr>
+        <tr><td class="rank">6</td><td><strong>New Feature Request / Improvement</strong></td><td><span class="pill pk">Knowledge Gap</span></td><td class="num">47</td><td class="pct">1.2%</td><td class="num gm">8</td><td class="pct gm">17.0%</td></tr>
+        <tr><td class="rank">7</td><td><strong>Product Bug</strong> <em style="font-size:10px;color:#aaa">(explicitly tagged)</em></td><td><span class="pill pp">Product Issue</span></td><td class="num">44</td><td class="pct">1.1%</td><td class="num gvh">20</td><td class="pct gvh"><strong>45.5%</strong></td></tr>
+        <tr><td class="rank">8</td><td><strong>Feature limit and Feature activation</strong></td><td><span class="pill pp">Product Issue</span></td><td class="num">34</td><td class="pct">0.8%</td><td class="num gm">10</td><td class="pct gm">29.4%</td></tr>
+        <tr><td class="rank">9</td><td>Provisioning</td><td><span class="pill pp">Product Issue</span></td><td class="num">26</td><td class="pct">0.6%</td><td class="num gl">1</td><td class="pct gl">3.8%</td></tr>
+        <tr><td class="rank">10</td><td>Other issues</td><td><span class="pill pw">Other</span></td><td class="num">69</td><td class="pct">1.7%</td><td class="num gl">2</td><td class="pct gl">2.9%</td></tr>
+      </tbody>
+      <tfoot class="or-foot"><tr><td></td><td>TOTAL (sub-cause classified)</td><td></td><td class="num">4,014</td><td class="pct">60.1% of 6,676</td><td class="num gh">152</td><td class="pct">3.8%</td></tr></tfoot>
+    </table>
+  </div>
+  <p class="note">⚠ "Product Bug" = 45.5% GUS rate. "Feature Limit" = 29.4%. "New Feature Request" = 17.0% — customers hitting platform boundaries that require Engineering, not documentation.</p>
+
+  <div class="sec or" data-i="💡">Key Insights — JB Common Issues</div>
+  <div class="insight-grid">
+    <div class="ins al"><div class="it">🚨 Journey Errors = Highest GUS Rate Sub-Cluster (9.6%)</div><p><strong>543 cases / 52 GUS</strong>. OMM_FUNC_EXEC_ERROR and hard errors indicate repeatable execution engine bugs. Sev 1 GUS rate = 22.7%.</p></div>
+    <div class="ins al"><div class="it">⚠ Contact Deletion = GDPR/CCPA Compliance Risk</div><p><strong>341 cases / 26 GUS (7.6%)</strong>. Contact deletion failures expose legal compliance risk. Must be treated as a P1 product issue regardless of case severity.</p></div>
+    <div class="ins wn"><div class="it">⏱ Wait/Delay Cluster = 8.7% GUS Rate</div><p><strong>332 cases / 29 GUS</strong>. "Wait By Attribute not releasing contacts" is a known repeatable failure pattern with 22.4% Sev 1 GUS rate. Likely warrants a dedicated GUS item.</p></div>
+    <div class="ins wn"><div class="it">📦 Package Manager = Highest GUS Rate (11.0%)</div><p><strong>155 cases / 17 GUS</strong>. Small cluster but highest non-incident GUS rate. Custom Activity and Package Manager deployment failures are causing engineering investigations disproportionate to volume.</p></div>
+    <div class="ins in"><div class="it">🏢 Contact Builder = Largest Non-Broad Cluster</div><p><strong>1,309 cases / 62 GUS (4.7%)</strong>. Highest absolute case volume after the broad JB umbrella. 140 Sev 1 cases — high customer impact from CB configuration and deletion issues.</p></div>
+    <div class="ins in"><div class="it">🐛 "Product Bug" Sub-Cause = 45.5% GUS Rate</div><p>When cases are explicitly tagged "Product Bug", nearly half go to GUS. JB customers are correctly identifying bugs. The signal is reliable — every "Product Bug" sub-cause case should be reviewed for GUS linkage.</p></div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════ TAB 7: JB TCD ══════════ -->
+<div id="jb-tcd" class="tab-content">
+<div class="container">
+
+  <div class="sec or" data-i="🎯">JB Top Cluster Deep-Dive — Volume Reduction Plan</div>
+  <div class="kpi-row">
+    <div class="kpi or"><div class="lbl">Clusters Analysed</div><div class="val">5</div><div class="hint">Top 5 by case volume</div></div>
+    <div class="kpi rd"><div class="lbl">Cases in Scope</div><div class="val">2,992</div><div class="hint">44.8% of 6,676 JB cases</div></div>
+    <div class="kpi pu"><div class="lbl">GUS in Scope</div><div class="val">190</div><div class="hint">Across top 5 clusters</div></div>
+    <div class="kpi gn"><div class="lbl">Deflection Potential</div><div class="val">~1,400</div><div class="hint">43–51% of in-scope cases</div></div>
+  </div>
+
+  <!-- CLUSTER 1 -->
+  <div class="sec or" data-i="1️⃣">Contact Builder &amp; Audience Builder — 1,309 Cases (19.6% of JB)</div>
+  <div class="bar-grid">
+    <div class="cb">
+      <h4>Cluster Stats</h4>
+      <div class="brow"><div class="blbl"><span>Total Cases</span><span>1,309</span></div><div class="btrk or-trk"><div class="bfil b2" style="width:100%">1,309</div></div></div>
+      <div class="brow"><div class="blbl"><span>GUS Escalations</span><span>62 (4.7%)</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:4.7%">62</div></div></div>
+      <div class="brow"><div class="blbl"><span>Sev 1 – Critical</span><span>140</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:10.7%">140</div></div></div>
+      <div class="brow"><div class="blbl"><span>Sev 2 – Urgent</span><span>307</span></div><div class="btrk or-trk"><div class="bfil b1" style="width:23.5%">307</div></div></div>
+    </div>
+    <div class="cb">
+      <h4>Category &amp; Root Cause</h4>
+      <p style="font-size:12px;color:#444;line-height:1.6"><span class="pill po">Mixed</span> Configuration / Training + Minor Product Bugs<br><br>
+      • No guided setup wizard for CB data source linking<br>
+      • No in-product validation when AB criteria return zero contacts<br>
+      • Doc gaps around attribute inheritance and field mapping rules<br>
+      • No proactive alert when an Audience goes stale or linked DE schema changes</p>
+    </div>
+  </div>
+  <div class="tw" style="margin-top:10px">
+    <table>
+      <thead class="or-head"><tr><th>Action</th><th>Type</th><th>Expected Impact</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td>In-product onboarding flow for first-time CB/AB users</td><td><span class="itag it-b">Self-Service</span></td><td class="num dn">High — 65.9% JB cases are training gaps</td></tr>
+        <tr><td>Knowledge articles: top 10 CB configuration errors with resolution steps</td><td><span class="itag it-b">Docs</span></td><td class="num gm">Medium</td></tr>
+        <tr><td>Audience Builder "dry run" — show contact count before activation</td><td><span class="itag it-r">Product</span></td><td class="num dn">High — prevents "no contacts entering" cases</td></tr>
+        <tr><td>Schema mismatch warning when a DE used in AB gets modified</td><td><span class="itag it-r">Product</span></td><td class="num gm">Medium</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ins in" style="margin-top:8px"><div class="it">Deflection Estimate: ~35–40% (~460–520 cases)</div><p>Primary lever is self-service content + in-product validation. Low engineering cost, high support impact.</p></div>
+
+  <!-- CLUSTER 2 -->
+  <div class="sec or" data-i="2️⃣">Journey Errors &amp; Hard Errors — 543 Cases (8.1% of JB)</div>
+  <div class="bar-grid">
+    <div class="cb">
+      <h4>Cluster Stats</h4>
+      <div class="brow"><div class="blbl"><span>Total Cases</span><span>543</span></div><div class="btrk or-trk"><div class="bfil b2" style="width:100%">543</div></div></div>
+      <div class="brow"><div class="blbl"><span>GUS Escalations</span><span>52 (9.6%) ⚠</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:9.6%">52</div></div></div>
+      <div class="brow"><div class="blbl"><span>Sev 1 – Critical</span><span>66</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:12.2%">66</div></div></div>
+      <div class="brow"><div class="blbl"><span>Sev 1 GUS Rate</span><span>22.7% ⚠</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:22.7%">22.7%</div></div></div>
+    </div>
+    <div class="cb">
+      <h4>Category &amp; Root Cause</h4>
+      <p style="font-size:12px;color:#444;line-height:1.6"><span class="pill pp">Product Bug</span> Technical Defect — Highest GUS rate sub-cluster<br><br>
+      • OMM_FUNC_EXEC_ERROR has no public troubleshooting guide<br>
+      • No error code lookup tool — cases open just to decode the error<br>
+      • No dedicated GUS item for journey execution engine failures<br>
+      • Same bugs hitting enterprise customers repeatedly (22.7% Sev 1 GUS)</p>
+    </div>
+  </div>
+  <div class="tw" style="margin-top:10px">
+    <table>
+      <thead class="or-head"><tr><th>Action</th><th>Type</th><th>Expected Impact</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td>Publish Journey Error Code Reference (OMM_FUNC_EXEC_ERROR + all hard error codes with causes &amp; fix steps)</td><td><span class="itag it-b">Docs</span></td><td class="num dn">High — removes pure "what does this mean" cases</td></tr>
+        <tr><td>Dedicate GUS item to execution engine hard errors — fix recurrence at root</td><td><span class="itag it-r">Engineering</span></td><td class="num dn">Very High — each fix removes an entire pattern</td></tr>
+        <tr><td>In-Journey error panel showing why a contact failed + retry option</td><td><span class="itag it-r">Product</span></td><td class="num dn">High</td></tr>
+        <tr><td>Alert when &gt;N contacts hit the same error within a journey</td><td><span class="itag it-r">Product</span></td><td class="num gm">Medium — enables proactive customer notification</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ins al" style="margin-top:8px"><div class="it">Deflection Estimate: ~50–60% (~270–325 cases)</div><p>Engineering fixes have the highest ROI here. Every GUS resolution eliminates a repeatable pattern. Error code docs are lowest effort, fastest win.</p></div>
+
+  <!-- CLUSTER 3 -->
+  <div class="sec or" data-i="3️⃣">Journey Email Not Sent / Not Delivered — 467 Cases (7.0% of JB)</div>
+  <div class="bar-grid">
+    <div class="cb">
+      <h4>Cluster Stats</h4>
+      <div class="brow"><div class="blbl"><span>Total Cases</span><span>467</span></div><div class="btrk or-trk"><div class="bfil b2" style="width:100%">467</div></div></div>
+      <div class="brow"><div class="blbl"><span>GUS Escalations</span><span>21 (4.5%)</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:4.5%">21</div></div></div>
+      <div class="brow"><div class="blbl"><span>Sev 1 – Critical</span><span>73</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:15.6%">73</div></div></div>
+      <div class="brow"><div class="blbl"><span>Sev 2 – Urgent</span><span>140</span></div><div class="btrk or-trk"><div class="bfil b1" style="width:30.0%">140</div></div></div>
+    </div>
+    <div class="cb">
+      <h4>Category &amp; Root Cause</h4>
+      <p style="font-size:12px;color:#444;line-height:1.6"><span class="pill po">Mixed</span> Product Bug + User Training (misconfigured send paths)<br><br>
+      • No in-journey "why didn't this email send?" diagnostic panel<br>
+      • No proactive send-failure notification to journey owner<br>
+      • Pre-activation checklist doesn't validate email published / sender profile active<br>
+      • 73 Sev 1 cases suggest platform-level failures (suppression list bugs, send classification)</p>
+    </div>
+  </div>
+  <div class="tw" style="margin-top:10px">
+    <table>
+      <thead class="or-head"><tr><th>Action</th><th>Type</th><th>Expected Impact</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td>Journey Send Diagnostics — per-contact "not sent" reason (suppressed, bounced, unpublished content, etc.)</td><td><span class="itag it-r">Product</span></td><td class="num dn">Very High — most common ask in this cluster</td></tr>
+        <tr><td>Pre-activation validation: warn if email is draft, sender profile inactive, or sending domain unverified</td><td><span class="itag it-r">Product</span></td><td class="num dn">High</td></tr>
+        <tr><td>Proactive notification to marketer when email send failure rate exceeds threshold mid-journey</td><td><span class="itag it-r">Product</span></td><td class="num gm">Medium</td></tr>
+        <tr><td>GUS engagement for suppression list edge cases causing false non-sends</td><td><span class="itag it-r">Engineering</span></td><td class="num gm">Medium</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ins wn" style="margin-top:8px"><div class="it">Deflection Estimate: ~40–50% (~185–235 cases)</div><p>A Send Diagnostics tool alone could deflect 30%+ of this cluster by giving customers self-serve answers. Pre-activation checks prevent the root misconfiguration.</p></div>
+
+  <!-- CLUSTER 4 -->
+  <div class="sec or" data-i="4️⃣">Contact Deletion Issues (GDPR/CCPA) — 341 Cases (5.1% of JB)</div>
+  <div class="bar-grid">
+    <div class="cb">
+      <h4>Cluster Stats</h4>
+      <div class="brow"><div class="blbl"><span>Total Cases</span><span>341</span></div><div class="btrk or-trk"><div class="bfil b2" style="width:100%">341</div></div></div>
+      <div class="brow"><div class="blbl"><span>GUS Escalations</span><span>26 (7.6%) ⚠</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:7.6%">26</div></div></div>
+      <div class="brow"><div class="blbl"><span>Sev 1 – Critical</span><span>47</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:13.8%">47</div></div></div>
+      <div class="brow"><div class="blbl"><span>Compliance Risk</span><span>GDPR / CCPA ⚠</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:100%"></div></div></div>
+    </div>
+    <div class="cb">
+      <h4>Category &amp; Root Cause</h4>
+      <p style="font-size:12px;color:#444;line-height:1.6"><span class="pill pp">Product Bug</span> + Compliance Risk — P1 regardless of case severity<br><br>
+      • No self-service deletion status tracker — customers can't see if deletion queued/processing/failed<br>
+      • No audit log exportable by customer to prove GDPR compliance<br>
+      • Deletion failures surface no error — cases open assuming deletion completed<br>
+      • 26 GUS cases = known platform bugs actively blocking deletion</p>
+    </div>
+  </div>
+  <div class="tw" style="margin-top:10px">
+    <table>
+      <thead class="or-head"><tr><th>Action</th><th>Type</th><th>Expected Impact</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td>Contact Deletion Status Dashboard — queued / in progress / completed / failed per request</td><td><span class="itag it-r">Product</span></td><td class="num dn">Very High — eliminates "did my deletion work?" cases</td></tr>
+        <tr><td>Email notification on deletion completion or failure with reason</td><td><span class="itag it-r">Product</span></td><td class="num dn">High</td></tr>
+        <tr><td>Fix GUS-tracked deletion bugs — each resolved bug removes a repeatable case pattern</td><td><span class="itag it-r">Engineering</span></td><td class="num dn">Very High</td></tr>
+        <tr><td>Exportable deletion audit log for GDPR evidence</td><td><span class="itag it-r">Product</span></td><td class="num gm">Medium — also reduces legal risk exposure</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ins al" style="margin-top:8px"><div class="it">Deflection Estimate: ~60–70% (~205–240 cases) + Legal Risk Reduction</div><p>Highest compliance urgency. A Status Dashboard alone could eliminate 50%+ of cases. GUS bug fixes are mandatory for GDPR compliance, not just volume reduction.</p></div>
+
+  <!-- CLUSTER 5 -->
+  <div class="sec or" data-i="5️⃣">Journey Wait, Delay &amp; Throttling Issues — 332 Cases (5.0% of JB)</div>
+  <div class="bar-grid">
+    <div class="cb">
+      <h4>Cluster Stats</h4>
+      <div class="brow"><div class="blbl"><span>Total Cases</span><span>332</span></div><div class="btrk or-trk"><div class="bfil b2" style="width:100%">332</div></div></div>
+      <div class="brow"><div class="blbl"><span>GUS Escalations</span><span>29 (8.7%) ⚠</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:8.7%">29</div></div></div>
+      <div class="brow"><div class="blbl"><span>Sev 1 – Critical</span><span>49</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:14.8%">49</div></div></div>
+      <div class="brow"><div class="blbl"><span>Sev 1 GUS Rate</span><span>22.4% ⚠</span></div><div class="btrk or-trk"><div class="bfil b4" style="width:22.4%">22.4%</div></div></div>
+    </div>
+    <div class="cb">
+      <h4>Category &amp; Root Cause</h4>
+      <p style="font-size:12px;color:#444;line-height:1.6"><span class="pill pp">Product Bug</span> — Known repeatable failure pattern<br><br>
+      • "Wait By Attribute not releasing contacts" — no dedicated GUS item confirmed<br>
+      • No in-journey visibility into contacts currently waiting at a Wait step<br>
+      • No alerting when contacts stuck at a Wait step beyond expected duration<br>
+      • Throttling limits not surfaced in-product before journey activation</p>
+    </div>
+  </div>
+  <div class="tw" style="margin-top:10px">
+    <table>
+      <thead class="or-head"><tr><th>Action</th><th>Type</th><th>Expected Impact</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td>Dedicate GUS item for "Wait By Attribute not releasing contacts" — fix root cause</td><td><span class="itag it-r">Engineering</span></td><td class="num dn">Very High — directly eliminates #1 pattern in cluster</td></tr>
+        <tr><td>Journey Canvas "Contacts Waiting" live counter per Wait step</td><td><span class="itag it-r">Product</span></td><td class="num dn">High — replaces case opens with self-diagnosis</td></tr>
+        <tr><td>Alert: "X contacts have been waiting at step Y for &gt;48h" notification to journey owner</td><td><span class="itag it-r">Product</span></td><td class="num dn">High</td></tr>
+        <tr><td>In-product throttling limit display at Journey Activation with recommended settings</td><td><span class="itag it-b">Self-Service</span></td><td class="num gm">Medium</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="ins wn" style="margin-top:8px"><div class="it">Deflection Estimate: ~55–65% (~180–215 cases)</div><p>A single GUS fix for "Wait By Attribute" could eliminate the majority of this cluster. Live visibility into waiting contacts removes the remaining uncertainty-driven cases.</p></div>
+
+  <!-- CROSS-CUTTING GAPS -->
+  <div class="sec or" data-i="⚠️">Cross-Cutting Gaps — Across All 5 Clusters</div>
+  <div class="tw">
+    <table>
+      <thead class="or-head"><tr><th>Gap</th><th>Clusters Affected</th><th>Priority</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td><strong>No in-product diagnostic tooling</strong> — customers cannot self-diagnose failures</td><td>All 5</td><td><span class="pill pp">Critical</span></td></tr>
+        <tr><td><strong>Error messages not actionable</strong> — show code only, no fix guidance</td><td>#2, #3, #5</td><td><span class="pill pp">Critical</span></td></tr>
+        <tr><td><strong>No proactive notification</strong> when something silently fails</td><td>#3, #4, #5</td><td><span class="pill po">High</span></td></tr>
+        <tr><td><strong>Known product bugs (GUS items) not fast-tracked</strong> to resolution</td><td>#2, #4, #5</td><td><span class="pill pp">Critical</span></td></tr>
+        <tr><td><strong>Sub-cause classification not enforced</strong> — 39.9% JB cases unclassified, hiding bugs</td><td>All 5</td><td><span class="pill po">High</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="sec or" data-i="📊">Estimated Volume Reduction Summary</div>
+  <div class="tw">
+    <table>
+      <thead class="or-head"><tr><th>#</th><th>Cluster</th><th class="num">Cases</th><th class="num">GUS</th><th class="num">Deflection %</th><th class="num">Cases Saved</th><th>Primary Lever</th></tr></thead>
+      <tbody class="or-body">
+        <tr><td class="rank">1</td><td>Contact Builder &amp; Audience Builder</td><td class="num">1,309</td><td class="num">62</td><td class="num">35–40%</td><td class="num dn"><strong>460–520</strong></td><td>Self-service content + in-product validation</td></tr>
+        <tr><td class="rank">2</td><td>Journey Errors &amp; Hard Errors</td><td class="num">543</td><td class="num">52</td><td class="num">50–60%</td><td class="num dn"><strong>270–325</strong></td><td>Error code docs + product bug fixes (GUS)</td></tr>
+        <tr><td class="rank">3</td><td>Journey Email Not Sent / Not Delivered</td><td class="num">467</td><td class="num">21</td><td class="num">40–50%</td><td class="num dn"><strong>185–235</strong></td><td>Send Diagnostics tool + pre-activation checks</td></tr>
+        <tr><td class="rank">4</td><td>Contact Deletion Issues (GDPR/CCPA)</td><td class="num">341</td><td class="num">26</td><td class="num">60–70%</td><td class="num dn"><strong>205–240</strong></td><td>Status dashboard + GUS bug fixes</td></tr>
+        <tr><td class="rank">5</td><td>Journey Wait, Delay &amp; Throttling</td><td class="num">332</td><td class="num">29</td><td class="num">55–65%</td><td class="num dn"><strong>180–215</strong></td><td>GUS fix (Wait By Attribute) + live visibility</td></tr>
+      </tbody>
+      <tfoot class="or-foot">
+        <tr><td colspan="2"><strong>TOTAL</strong></td><td class="num"><strong>2,992</strong></td><td class="num"><strong>190</strong></td><td class="num"><strong>43–51%</strong></td><td class="num dn"><strong>1,300–1,535</strong></td><td><strong>~20–23% reduction in overall JB volume</strong></td></tr>
+      </tfoot>
+    </table>
+  </div>
+  <p class="note">Deflection estimates assume consistent content quality, engineering fix delivery, and product tooling rollout. Combined effort across all 5 clusters required for maximum impact.</p>
+
+  <div class="insight-grid" style="margin-top:14px">
+    <div class="ins al"><div class="it">🚨 Engineering Fixes Have Highest ROI</div><p>GUS-tracked bugs in clusters #2, #4, #5 are repeatable patterns. A single product fix eliminates the entire sub-pattern — no content or tooling can substitute for fixing the root cause.</p></div>
+    <div class="ins al"><div class="it">⚠ GDPR Cluster is Non-Negotiable</div><p>Contact Deletion (341 cases, 7.6% GUS) carries legal exposure. This must be treated as a P1 product obligation regardless of volume — every unresolved deletion failure is a potential compliance violation.</p></div>
+    <div class="ins wn"><div class="it">📚 Diagnostics &amp; Docs = Fastest Wins</div><p>Error code references and in-product diagnostic tooling can be delivered faster than engineering fixes and will deflect 30–50% of cases in clusters #2 and #3 independently.</p></div>
+    <div class="ins gd"><div class="it">✅ ~1,400 Cases Deflectable in Top 5 Alone</div><p>Focused execution on these 5 clusters could reduce overall JB volume by ~20–23% without touching the broader long-tail — and reduce GUS escalations by ~60–70 cases per period.</p></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════ TAB 8: ES TCD ══════════ -->
+<div id="es-tcd" class="tab-content">
+<div class="container">
+
+  <div class="sec" data-i="🎯">ES Top 5 Clusters — Volume Reduction Action Plan</div>
+  <div class="kpi-row">
+    <div class="kpi rd"><div class="lbl">Clusters Analysed</div><div class="val">5</div><div class="hint">Top 5 by case volume</div></div>
+    <div class="kpi rd"><div class="lbl">Cases in Scope</div><div class="val">5,436</div><div class="hint">29.0% of 18,766 ES cases</div></div>
+    <div class="kpi pu"><div class="lbl">GUS in Scope</div><div class="val">259</div><div class="hint">Across top 5 clusters</div></div>
+    <div class="kpi gn"><div class="lbl">Deflection Potential</div><div class="val">~2,679</div><div class="hint">~49% of in-scope cases</div></div>
+  </div>
+
+  <div class="sec" data-i="📊">Top 5 Clusters — At a Glance</div>
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Cluster</th>
+          <th class="num">Cases</th><th class="num">GUS</th><th class="num">GUS%</th>
+          <th class="num">Knowledge Gap%</th><th class="num">Platform Issue%</th><th class="num">Unclassified%</th>
+          <th class="num">Deflectable</th><th>Primary Driver</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="rank">1</td>
+          <td><strong>Automation Studio — Errors &amp; Failures</strong></td>
+          <td class="num">1,478</td><td class="num">128</td><td class="num">8.7%</td>
+          <td class="num">42%</td><td class="num">14%</td><td class="num">39%</td>
+          <td class="num"><strong>~621</strong></td>
+          <td><span class="badge b-or">Mixed — Bug + Training</span></td>
+        </tr>
+        <tr>
+          <td class="rank">2</td>
+          <td><strong>Email Sending &amp; Delivery Failures</strong></td>
+          <td class="num">1,322</td><td class="num">34</td><td class="num">2.6%</td>
+          <td class="num">47%</td><td class="num">10%</td><td class="num">37%</td>
+          <td class="num"><strong>~622</strong></td>
+          <td><span class="badge b-rd">Training Gap (dominant)</span></td>
+        </tr>
+        <tr>
+          <td class="rank">3</td>
+          <td><strong>Data Extension &amp; Data Management</strong></td>
+          <td class="num">1,292</td><td class="num">55</td><td class="num">4.3%</td>
+          <td class="num">47%</td><td class="num">10%</td><td class="num">39%</td>
+          <td class="num"><strong>~607</strong></td>
+          <td><span class="badge b-rd">Training Gap (dominant)</span></td>
+        </tr>
+        <tr>
+          <td class="rank">4</td>
+          <td><strong>Login, Access &amp; SSO Issues</strong></td>
+          <td class="num">747</td><td class="num">37</td><td class="num">5.0%</td>
+          <td class="num">44%</td><td class="num">14%</td><td class="num">35%</td>
+          <td class="num"><strong>~329</strong></td>
+          <td><span class="badge b-or">Mixed — Config + SSO Bugs</span></td>
+        </tr>
+        <tr>
+          <td class="rank">5</td>
+          <td><strong>Security — Secrets, Expiry &amp; Notifications</strong></td>
+          <td class="num">597</td><td class="num">5</td><td class="num">0.8%</td>
+          <td class="num">41%</td><td class="num">8%</td><td class="num">39%</td>
+          <td class="num"><strong>~500</strong></td>
+          <td><span class="badge b-gn">Proactive Comms Gap</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="2">TOTAL</td><td class="num">5,436</td><td class="num">259</td><td class="num">4.8%</td>
+        <td colspan="3"></td><td class="num"><strong>~2,679</strong></td><td><strong>~49% deflectable</strong></td></tr>
+      </tfoot>
+    </table>
+  </div>
+  <p class="note">Deflectable = knowledge gap + proactive comms cases that should not require live support.</p>
+
+  <div class="sec" data-i="🎯">Consolidated Action Plan — Ranked by Deflection ROI</div>
+
+  <div class="cluster-row c1">
+    <div class="cr-top">
+      <div>
+        <div class="cr-title">1 · Automation Studio — Errors &amp; Failures</div>
+        <div style="font-size:11px;color:#666;margin-top:3px">1,478 cases · 128 GUS · 8.7% GUS rate · ~42% training gap</div>
+      </div>
+      <div class="cr-stats">
+        <div class="cr-stat"><div class="v" style="color:#c23934">~621</div><div class="l">Deflectable</div></div>
+        <div class="cr-stat"><div class="v" style="color:#ff6900">~206</div><div class="l">Product Fixes</div></div>
+        <div class="cr-stat"><div class="v" style="color:#7b5ea7">~577</div><div class="l">Unclassified</div></div>
+      </div>
+    </div>
+    <div class="cr-actions">
+      <div class="cr-action"><div class="at">📚 Troubleshooting Runbook</div><div class="ad">Skipped automations, timeouts, stuck-in-running guide. Estimated deflect: <strong>200+ cases</strong></div></div>
+      <div class="cr-action"><div class="at">🐛 GUS Escalation — W-22617502, W-22644579</div><div class="ad">Two recurring bugs generating 10+ cases each. Active R&amp;D engagement needed. <strong>Reduce Sev1 count</strong></div></div>
+      <div class="cr-action"><div class="at">⚙️ In-Product Error Messaging</div><div class="ad">"Data extension not found", NULL value errors — better contextual messages would prevent cases</div></div>
+      <div class="cr-action"><div class="at">📋 Sub-Cause Enforcement</div><div class="ad">39% unclassified — mandate sub-cause at case close. Hiding real bug count</div></div>
+      <div class="cr-action"><div class="at">🎓 File Transfer / Data Extract Guide</div><div class="ad">Azure Blob, FTP decrypt, Data Extract output formats — top training gap topics</div></div>
+      <div class="cr-action"><div class="at">📢 Proactive Maintenance Comms</div><div class="ad">Post-maintenance spikes (W-22566206) — proactive trust.salesforce.com post reduces duplicate cases</div></div>
+    </div>
+  </div>
+
+  <div class="cluster-row c2">
+    <div class="cr-top">
+      <div>
+        <div class="cr-title">2 · Email Sending &amp; Delivery Failures</div>
+        <div style="font-size:11px;color:#666;margin-top:3px">1,322 cases · 34 GUS · 2.6% GUS rate · ~47% training gap</div>
+      </div>
+      <div class="cr-stats">
+        <div class="cr-stat"><div class="v" style="color:#c23934">~622</div><div class="l">Deflectable</div></div>
+        <div class="cr-stat"><div class="v" style="color:#ff6900">~132</div><div class="l">Platform Issues</div></div>
+        <div class="cr-stat"><div class="v" style="color:#7b5ea7">~489</div><div class="l">Unclassified</div></div>
+      </div>
+    </div>
+    <div class="cr-actions">
+      <div class="cr-action"><div class="at">📚 Triggered Send Troubleshooting Guide</div><div class="ad">Send job setup, error codes, why emails queue — highest single deflection opportunity. <strong>300+ cases</strong></div></div>
+      <div class="cr-action"><div class="at">⚠️ In-Product Error Clarity</div><div class="ad">Error message issue = 79 cases. Better error descriptions at point of failure would prevent cases</div></div>
+      <div class="cr-action"><div class="at">🎓 Trailhead Module</div><div class="ad">"Email Send Troubleshooting" module on Trailhead — scalable self-service for recurring how-to questions</div></div>
+      <div class="cr-action"><div class="at">📋 Enforce Sub-Cause Tagging</div><div class="ad">413 cases (37%) unclassified — product bugs are hidden in this bucket</div></div>
+      <div class="cr-action"><div class="at">🚦 Send Throttling Explainer</div><div class="ad">Feature limit cases (24) — customers don't understand throttling behavior. In-product tooltip or help link</div></div>
+      <div class="cr-action"><div class="at">📢 Incident Comms Process</div><div class="ad">26 incident cases — proactive trust.salesforce.com posts during send degradation reduce duplicate cases</div></div>
+    </div>
+  </div>
+
+  <div class="cluster-row c3">
+    <div class="cr-top">
+      <div>
+        <div class="cr-title">3 · Data Extension &amp; Data Management</div>
+        <div style="font-size:11px;color:#666;margin-top:3px">1,292 cases · 55 GUS · 4.3% GUS rate · ~47% training gap</div>
+      </div>
+      <div class="cr-stats">
+        <div class="cr-stat"><div class="v" style="color:#c23934">~607</div><div class="l">Deflectable</div></div>
+        <div class="cr-stat"><div class="v" style="color:#ff6900">~129</div><div class="l">Platform Issues</div></div>
+        <div class="cr-stat"><div class="v" style="color:#7b5ea7">~504</div><div class="l">Unclassified</div></div>
+      </div>
+    </div>
+    <div class="cr-actions">
+      <div class="cr-action"><div class="at">📚 Data Import Wizard Guide</div><div class="ad">Import activity setup, FTP file paths, column mapping — covers majority of training-gap cases. <strong>250+ cases</strong></div></div>
+      <div class="cr-action"><div class="at">📚 Retention Policy Setup Guide</div><div class="ad">"How to set retention policy for data extension" — direct self-service candidate</div></div>
+      <div class="cr-action"><div class="at">🐛 Data Extract Product Bugs</div><div class="ad">16 Product Bug cases, 55 GUS — extract UTF8 conversion, output format issues. Coordinate with engineering</div></div>
+      <div class="cr-action"><div class="at">⚙️ In-Product Guided Setup</div><div class="ad">Import activity wizard with inline validation — reduce setup errors at source</div></div>
+      <div class="cr-action"><div class="at">🎓 Data Extensions 101</div><div class="ad">Trailhead or help doc: creating, editing, exporting, retention — covers repeated basic questions</div></div>
+      <div class="cr-action"><div class="at">📋 Sub-Cause Compliance</div><div class="ad">518 unclassified cases (39%) — highest in any cluster. Mandate at case close</div></div>
+    </div>
+  </div>
+
+  <div class="cluster-row c4">
+    <div class="cr-top">
+      <div>
+        <div class="cr-title">4 · Login, Access &amp; SSO Issues</div>
+        <div style="font-size:11px;color:#666;margin-top:3px">747 cases · 37 GUS · 5.0% GUS rate · ~44% training gap</div>
+      </div>
+      <div class="cr-stats">
+        <div class="cr-stat"><div class="v" style="color:#c23934">~329</div><div class="l">Deflectable</div></div>
+        <div class="cr-stat"><div class="v" style="color:#ff6900">~105</div><div class="l">Platform Issues</div></div>
+        <div class="cr-stat"><div class="v" style="color:#7b5ea7">~261</div><div class="l">Unclassified</div></div>
+      </div>
+    </div>
+    <div class="cr-actions">
+      <div class="cr-action"><div class="at">📚 SSO Setup Guide per IDP</div><div class="ad">Azure AD, Okta, MyLogin step-by-step guides. Azure AD alone = 50+ cases. <strong>150+ cases deflectable</strong></div></div>
+      <div class="cr-action"><div class="at">📚 SSO Certificate Renewal Runbook</div><div class="ad">"SSO Certificate Expiry Discrepancy", "cert update process" — proactive guide prevents recurring cases</div></div>
+      <div class="cr-action"><div class="at">🔔 Proactive Cert Expiry Notification</div><div class="ad">Auto-notify admins 30/7/1 days before SSO certificate expiry. Would eliminate an entire sub-pattern</div></div>
+      <div class="cr-action"><div class="at">🐛 SSO Error Message Improvement</div><div class="ad">46 "Error message issue" cases — SSO failure messages are cryptic. Better messages = fewer cases</div></div>
+      <div class="cr-action"><div class="at">🚦 Feature Limit Messaging</div><div class="ad">29 feature limit cases — customers don't know what SSO options are available. In-product guidance needed</div></div>
+      <div class="cr-action"><div class="at">📢 SSO Outage Comms</div><div class="ad">25 incident cases — SSO outages generate case spikes. Trust posts + in-app banner needed</div></div>
+    </div>
+  </div>
+
+  <div class="cluster-row c5">
+    <div class="cr-top">
+      <div>
+        <div class="cr-title">5 · Security — Secrets, Expiry &amp; Notifications</div>
+        <div style="font-size:11px;color:#666;margin-top:3px">597 cases · 5 GUS · 0.8% GUS rate · ~41% training gap · Nearly 100% preventable</div>
+      </div>
+      <div class="cr-stats">
+        <div class="cr-stat"><div class="v" style="color:#2e844a">~500</div><div class="l">Deflectable</div></div>
+        <div class="cr-stat"><div class="v" style="color:#ff6900">~50</div><div class="l">Platform Issues</div></div>
+        <div class="cr-stat"><div class="v" style="color:#7b5ea7">~233</div><div class="l">Unclassified</div></div>
+      </div>
+    </div>
+    <div class="cr-actions">
+      <div class="cr-action"><div class="at">🔔 Automated Secret Expiry Notification</div><div class="ad">In-app + email alert 30/7/1 days before secret expiry. Would eliminate majority of this cluster. <strong>400+ cases</strong></div></div>
+      <div class="cr-action"><div class="at">📢 Proactive Trust Post Before Deadlines</div><div class="ad">"June 1, 2026 deadline for App Client Secret Rotation" — 50+ identical cases. One trust post = zero cases</div></div>
+      <div class="cr-action"><div class="at">📚 Secret Rotation How-To Guide</div><div class="ad">Step-by-step guide for enabling and enforcing secret rotation in installed packages</div></div>
+      <div class="cr-action"><div class="at">⚙️ In-Product Rotation Wizard</div><div class="ad">Guided rotation flow within Setup page — removes need for customers to contact support at all</div></div>
+      <div class="cr-action"><div class="at">📧 Admin Email Ahead of Deprecations</div><div class="ad">Proactive email to org admins before security policy changes — prevents batch case submissions</div></div>
+      <div class="cr-action"><div class="at">📋 Sub-Cause Compliance</div><div class="ad">165 unclassified cases (39%) — many are proactive/outbound but not tagged correctly</div></div>
+    </div>
+  </div>
+
+  <div class="sec" data-i="📉">Combined Volume Reduction Forecast</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Action Category</th><th>Clusters Impacted</th><th class="num">Est. Cases Deflected</th><th class="num">% of 5,436</th><th>Timeline</th><th>Owner</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Self-service content (KB articles, guides, Trailhead)</strong></td><td>All 5</td><td class="num"><strong>1,200–1,500</strong></td><td class="num">22–28%</td><td><span class="ep ep-me">2–3 months</span></td><td><span class="op">Support Enablement + Docs</span></td></tr>
+        <tr><td><strong>Proactive notifications (secret expiry, cert expiry, maintenance)</strong></td><td>Clusters 1, 4, 5</td><td class="num"><strong>500–700</strong></td><td class="num">9–13%</td><td><span class="ep ep-me">1–2 months</span></td><td><span class="op">Product + Eng</span></td></tr>
+        <tr><td><strong>Product bug fixes (GUS items)</strong></td><td>Clusters 1, 2, 3</td><td class="num"><strong>300–400</strong></td><td class="num">6–7%</td><td><span class="ep ep-hi">3–6 months</span></td><td><span class="op">R&amp;D / Engineering</span></td></tr>
+        <tr><td><strong>In-product error message improvement</strong></td><td>Clusters 1, 2, 4</td><td class="num"><strong>150–200</strong></td><td class="num">3–4%</td><td><span class="ep ep-me">2–4 months</span></td><td><span class="op">Product</span></td></tr>
+        <tr><td><strong>Sub-cause enforcement (data quality)</strong></td><td>All 5</td><td class="num">0 direct, better visibility</td><td class="num">—</td><td><span class="ep ep-lo">Immediate</span></td><td><span class="op">Support Ops</span></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="2"><strong>TOTAL POTENTIAL REDUCTION</strong></td><td class="num"><strong>2,150–2,800 cases</strong></td><td class="num"><strong>40–52%</strong></td><td colspan="2">Over 6 months with full execution</td></tr></tfoot>
+    </table>
+  </div>
+
+  <!-- ─── CLUSTER 1 DETAIL ─── -->
+  <div class="es-cluster-sec">⚙️ Cluster 1 — Automation Studio: Errors &amp; Failures (1,478 cases)</div>
+  <div class="sum-bar">
+    <div class="sb t1"><div class="sl">Total Cases</div><div class="sv">1,478</div><div class="sh">7.9% of all ES cases</div></div>
+    <div class="sb t1"><div class="sl">GUS Cases</div><div class="sv">128</div><div class="sh">8.7% GUS rate</div></div>
+    <div class="sb t2"><div class="sl">Knowledge Gap</div><div class="sv">~42%</div><div class="sh">Training + docs deficit</div></div>
+    <div class="sb t2"><div class="sl">Platform Issues</div><div class="sv">~14%</div><div class="sh">Bugs + incidents + limits</div></div>
+    <div class="sb t4"><div class="sl">Unclassified</div><div class="sv">39%</div><div class="sh">No sub-cause set</div></div>
+    <div class="sb t5"><div class="sl">Deflectable</div><div class="sv">~621</div><div class="sh">With right content + fixes</div></div>
+  </div>
+  <div style="background:white;border-radius:10px;padding:18px 20px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px">
+    <div class="sbc"><div class="sbl"><span>Not classified (no sub-cause)</span><span>226 &nbsp;(39.1%)</span></div><div class="sbtr"><div class="sbfi f6" style="width:100%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>User needs instructions or training</span><span>200 &nbsp;(34.6%)</span></div><div class="sbtr"><div class="sbfi f1" style="width:88.5%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Need better documentation</span><span>42 &nbsp;(7.3%)</span></div><div class="sbtr"><div class="sbfi f1" style="width:18.6%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Error message issue</span><span>22 &nbsp;(3.8%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:9.7%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Incident / Outage / Maintenance</span><span>12 &nbsp;(2.1%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:5.3%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Feature limit / activation</span><span>11 &nbsp;(1.9%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:4.9%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Product Bug (explicitly tagged)</span><span>6 &nbsp;(1.0%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:2.7%"></div></div></div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat c-def"><h4>📚 Knowledge / Training Gap — 42%</h4><div class="cat-pct">~621 cases</div><p><strong>What's happening:</strong> Customers don't understand scheduling behavior, data extract output, file transfer setup, FTP decrypt, or how to interpret skip/error states.<br><br><strong>Real examples:</strong><br>· "How to setup automation studio status report"<br>· "Automation runs manually but not on schedule"<br>· "Data extension not found" filter activity error<br>· "Unable to stop automation in Automation Studio"<br>· "Automation performance improvement" (JP)</p></div>
+    <div class="cat c-prod"><h4>🐛 Platform / Product Issues — 14%</h4><div class="cat-pct">~207 cases</div><p><strong>What's happening:</strong> Real bugs generating repeat cases across customers.<br><br><strong>Top bug patterns:</strong><br>· Automations skipping on schedule (W-22617502, W-22644579)<br>· File Transfer / Azure Blob lock failures (W-22621975)<br>· Data Extract step errors (W-22651218, W-20211266)<br>· Stuck in "Running" state (W-22424262)<br>· Post-maintenance degradation (W-22566206)</p></div>
+    <div class="cat c-unc"><h4>❓ Unclassified — 39%</h4><div class="cat-pct">~576 cases</div><p><strong>What's happening:</strong> 39% of cases have no sub-cause coded. The highest risk bucket — product bugs are hiding here undetected.<br><br><strong>Signal:</strong> The unclassified GUS rate is estimated at ~5–6% based on overall patterns — ~30 GUS cases in this bucket are not being tracked against any known pattern.</p></div>
+  </div>
+  <div class="miss-grid">
+    <div class="miss"><h4>Missing: Skipped Automation Troubleshooting Runbook</h4><ul><li>No public guide explaining WHY automations get skipped (queue overlap, long-running SQL, concurrent automation limits)</li><li>Customers file cases asking "why was my automation skipped?" every single day</li><li>A single knowledge article with skip reasons + self-check steps would deflect <strong>150+ cases</strong></li></ul></div>
+    <div class="miss"><h4>Missing: File Transfer &amp; Data Extract Guide</h4><ul><li>No consolidated guide covering: FTP decrypt setup, Azure Blob integration, Data Extract output formats, ZIP vs flat file handling</li><li>"File Transfer Activity Failure – Unable to Decrypt File" and similar subjects appear 20+ times</li><li>Step-by-step setup guide would deflect <strong>60–80 cases</strong></li></ul></div>
+    <div class="miss"><h4>Missing: Actionable Error Code Glossary</h4><ul><li>22 "error message issue" cases — the error messages shown to customers are not self-explanatory</li><li>No searchable error code reference (e.g. what does "NULL value insert error" mean in context)</li><li>In-product or help site glossary would reduce escalations</li></ul></div>
+    <div class="miss"><h4>Missing: Active R&amp;D Engagement on Top 2 GUS Items</h4><ul><li>W-22617502 (automations being skipped) and W-22644579 (multiple automation failures) are each referenced by 3+ cases and still active</li><li>No evidence of a fix timeline being communicated to support or customers</li><li>Weekly GUS item review cadence with R&amp;D is missing</li></ul></div>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Action</th><th>Type</th><th class="num">Est. Deflection</th><th>Effort</th><th>Owner</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">1</td><td><strong>Publish "Automation Skipping &amp; Failure Troubleshooting" knowledge article</strong><br><span style="font-size:11px;color:#666">Cover: skip reasons, queue limits, concurrent automation behavior, SQL timeout thresholds</span></td><td><span class="ip ip-b">Self-Service</span></td><td class="num"><strong>150–200</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Docs / SE Team</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">2</td><td><strong>Escalate W-22617502 &amp; W-22644579 to R&amp;D for fix timeline commitment</strong><br><span style="font-size:11px;color:#666">These two GUS items are generating new cases every week. Need fix ETA for customer comms</span></td><td><span class="ip ip-h">Product Fix</span></td><td class="num"><strong>80–120</strong></td><td><span class="ep ep-me">Medium</span></td><td><span class="op">Support Manager + R&amp;D</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">3</td><td><strong>Publish "File Transfer &amp; Data Extract Setup" guide</strong><br><span style="font-size:11px;color:#666">FTP decrypt, Azure Blob, ZIP handling, output format options</span></td><td><span class="ip ip-b">Self-Service</span></td><td class="num"><strong>60–80</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Docs</span></td><td><span class="ip ip-m">P2</span></td></tr>
+        <tr><td class="rank">4</td><td><strong>Proactive trust.salesforce.com post during maintenance windows</strong><br><span style="font-size:11px;color:#666">Post before and during any maintenance affecting Automation Studio execution engine</span></td><td><span class="ip ip-m">Proactive Comms</span></td><td class="num"><strong>30–50</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Support Ops</span></td><td><span class="ip ip-m">P2</span></td></tr>
+        <tr><td class="rank">5</td><td><strong>Improve in-product error messages for skip and NULL value errors</strong><br><span style="font-size:11px;color:#666">Error messages should explain root cause and include a help link</span></td><td><span class="ip ip-h">Product Fix</span></td><td class="num"><strong>40–60</strong></td><td><span class="ep ep-hi">High</span></td><td><span class="op">Product / Eng</span></td><td><span class="ip ip-m">P2</span></td></tr>
+        <tr><td class="rank">6</td><td><strong>Enforce sub-cause at case close for Automation Studio cases</strong><br><span style="font-size:11px;color:#666">39% unclassified — add validation rule or manager review for cases closed without sub-cause</span></td><td><span class="ip ip-l">Process</span></td><td class="num">0 direct</td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Support Ops</span></td><td><span class="ip ip-m">P2</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── CLUSTER 2 DETAIL ─── -->
+  <div class="es-cluster-sec">📧 Cluster 2 — Email Sending &amp; Delivery Failures (1,322 cases)</div>
+  <div class="sum-bar">
+    <div class="sb t2"><div class="sl">Total Cases</div><div class="sv">1,322</div><div class="sh">7.0% of all ES cases</div></div>
+    <div class="sb t2"><div class="sl">GUS Cases</div><div class="sv">34</div><div class="sh">2.6% GUS rate (low)</div></div>
+    <div class="sb t1"><div class="sl">Knowledge Gap</div><div class="sv">~47%</div><div class="sh">Largest driver</div></div>
+    <div class="sb t2"><div class="sl">Platform Issues</div><div class="sv">~10%</div><div class="sh">Errors + incidents</div></div>
+    <div class="sb t4"><div class="sl">Unclassified</div><div class="sv">37%</div><div class="sh">No sub-cause set</div></div>
+    <div class="sb t5"><div class="sl">Deflectable</div><div class="sv">~622</div><div class="sh">Highest deflect potential</div></div>
+  </div>
+  <div style="background:white;border-radius:10px;padding:18px 20px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px">
+    <div class="sbc"><div class="sbl"><span>User needs instructions or training</span><span>439 &nbsp;(39.0%)</span></div><div class="sbtr"><div class="sbfi f1" style="width:100%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Not classified (no sub-cause)</span><span>413 &nbsp;(36.7%)</span></div><div class="sbtr"><div class="sbfi f6" style="width:94.1%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Need better documentation</span><span>87 &nbsp;(7.7%)</span></div><div class="sbtr"><div class="sbfi f1" style="width:19.8%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Error message issue</span><span>79 &nbsp;(7.0%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:18.0%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Incident / Outage</span><span>26 &nbsp;(2.3%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:5.9%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Feature limit / activation</span><span>24 &nbsp;(2.1%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:5.5%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Product Bug</span><span>6 &nbsp;(0.5%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:1.4%"></div></div></div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat c-def"><h4>📚 Knowledge / Training Gap — 47%</h4><div class="cat-pct">~622 cases</div><p><strong>What's happening:</strong> Customers don't understand triggered send jobs, why emails queue, test send vs live send behavior, or how to diagnose send failures.<br><br><strong>Real examples:</strong><br>· "Email Triggered Send Job Error" — misconfigured send definition<br>· "Test Emails Not Sending" — sandbox/test vs production MID confusion<br>· "Subscriber not receiving emails" — suppression list not understood<br>· "Marketing Cloud Email Sends Not Processing" — send queue behavior unknown</p></div>
+    <div class="cat c-prod"><h4>🐛 Platform / Product Issues — 10%</h4><div class="cat-pct">~132 cases</div><p><strong>What's happening:</strong><br>· 79 error message cases — send errors are not self-explanatory<br>· 26 incident cases — send degradation during platform issues<br>· 24 feature limit cases — customers hitting send throttle without warning<br>· 6 Product Bug cases with GUS linkage</p></div>
+    <div class="cat c-unc"><h4>❓ Unclassified — 37%</h4><div class="cat-pct">~489 cases</div><p><strong>What's happening:</strong> 413 cases (37%) closed without sub-cause. Low GUS rate (2.6%) may be understated — unclassified product failures not being escalated.</p></div>
+  </div>
+  <div class="miss-grid">
+    <div class="miss"><h4>Missing: Triggered Send Troubleshooting Flowchart</h4><ul><li>"Email Not Sending" is the most common subject — cause varies (suppression, send definition error, throttle, bad DE mapping)</li><li>A decision-tree troubleshooting guide would let customers self-diagnose</li><li>Estimated deflection: <strong>200–300 cases</strong></li></ul></div>
+    <div class="miss"><h4>Missing: Send Error Code Reference</h4><ul><li>79 "error message issue" cases — triggered send and delivery errors use internal codes that mean nothing to customers</li><li>A searchable error code glossary with resolution steps would prevent most of these cases</li><li>Estimated deflection: <strong>50–70 cases</strong></li></ul></div>
+    <div class="miss"><h4>Missing: Send Throttling In-Product Explanation</h4><ul><li>24 feature limit cases — customers don't know send throttle limits exist or how to request increases</li><li>A tooltip on the send throttle setting with a link to the request process would prevent confusion</li></ul></div>
+    <div class="miss"><h4>Missing: Incident Banner During Send Degradation</h4><ul><li>26 incident cases — during send degradation customers file cases because there's no in-product indication</li><li>Real-time trust.salesforce.com link shown in Email Studio during incidents would prevent duplicate filings</li></ul></div>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Action</th><th>Type</th><th class="num">Est. Deflection</th><th>Effort</th><th>Owner</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">1</td><td><strong>Publish "Email Not Sending — Troubleshooting Guide"</strong><br><span style="font-size:11px;color:#666">Decision flowchart: queue vs suppression vs config vs throttle vs DE mapping issues</span></td><td><span class="ip ip-b">Self-Service</span></td><td class="num"><strong>200–300</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Docs / SE Team</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">2</td><td><strong>Publish Triggered Send Error Code Reference</strong><br><span style="font-size:11px;color:#666">Common send error codes with plain-English cause and resolution steps</span></td><td><span class="ip ip-b">Self-Service</span></td><td class="num"><strong>50–70</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Docs</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">3</td><td><strong>Add in-product send throttle tooltip with request link</strong></td><td><span class="ip ip-h">Product Fix</span></td><td class="num"><strong>20–25</strong></td><td><span class="ep ep-me">Medium</span></td><td><span class="op">Product</span></td><td><span class="ip ip-m">P2</span></td></tr>
+        <tr><td class="rank">4</td><td><strong>Trust.salesforce.com banner in Email Studio during send degradation</strong></td><td><span class="ip ip-m">Proactive Comms</span></td><td class="num"><strong>20–30</strong></td><td><span class="ep ep-me">Medium</span></td><td><span class="op">Product + Support Ops</span></td><td><span class="ip ip-m">P2</span></td></tr>
+        <tr><td class="rank">5</td><td><strong>Trailhead module: "Email Send Troubleshooting in MC Engagement"</strong></td><td><span class="ip ip-b">Self-Service</span></td><td class="num"><strong>100+</strong></td><td><span class="ep ep-hi">High</span></td><td><span class="op">Enablement</span></td><td><span class="ip ip-m">P2</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── CLUSTER 3 DETAIL ─── -->
+  <div class="es-cluster-sec">🗄️ Cluster 3 — Data Extension &amp; Data Management (1,292 cases)</div>
+  <div class="sum-bar">
+    <div class="sb t3"><div class="sl">Total Cases</div><div class="sv">1,292</div><div class="sh">6.9% of all ES cases</div></div>
+    <div class="sb t3"><div class="sl">GUS Cases</div><div class="sv">55</div><div class="sh">4.3% GUS rate</div></div>
+    <div class="sb t1"><div class="sl">Knowledge Gap</div><div class="sv">~47%</div><div class="sh">Largest driver</div></div>
+    <div class="sb t2"><div class="sl">Platform Issues</div><div class="sv">~10%</div><div class="sh">Bugs + provisioning</div></div>
+    <div class="sb t4"><div class="sl">Unclassified</div><div class="sv">39%</div><div class="sh">Highest unclassified count</div></div>
+    <div class="sb t5"><div class="sl">Deflectable</div><div class="sv">~607</div><div class="sh">With self-service content</div></div>
+  </div>
+  <div style="background:white;border-radius:10px;padding:18px 20px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px">
+    <div class="sbc"><div class="sbl"><span>User needs instructions or training</span><span>538 &nbsp;(40.1%)</span></div><div class="sbtr"><div class="sbfi f1" style="width:100%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Not classified (no sub-cause)</span><span>518 &nbsp;(38.7%)</span></div><div class="sbtr"><div class="sbfi f6" style="width:96.3%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Need better documentation</span><span>88 &nbsp;(6.6%)</span></div><div class="sbtr"><div class="sbfi f1" style="width:16.4%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Error message issue</span><span>59 &nbsp;(4.4%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:11.0%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Feature limit / activation</span><span>25 &nbsp;(1.9%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:4.7%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Product Bug (explicitly tagged)</span><span>16 &nbsp;(1.2%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:3.0%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Incident / Outage</span><span>14 &nbsp;(1.0%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:2.6%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Provisioning</span><span>13 &nbsp;(1.0%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:2.4%"></div></div></div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat c-def"><h4>📚 Knowledge / Training Gap — 47%</h4><div class="cat-pct">~607 cases</div><p><strong>What's happening:</strong> Basic setup and operational confusion around data extensions.<br><br><strong>Real examples:</strong><br>· "Editing data extension" — basic config question<br>· "File upload error in Data Extension" — import setup<br>· "Accessing data extension export" — export path confusion<br>· "Retention policy setup for data extension"<br>· "Data extension records deleted unexpectedly" — retention policy misunderstanding<br>· "Import Activity failing to locate file in Enhanced FTP" (filed as Sev 1!)</p></div>
+    <div class="cat c-prod"><h4>🐛 Platform / Product Issues — 10%</h4><div class="cat-pct">~129 cases</div><p><strong>What's happening:</strong><br>· 16 Product Bug cases — extract format issues, data mismatch<br>· 59 Error message cases — DE errors not self-explanatory<br>· 13 Provisioning cases — DE entitlement or access setup<br>· 14 Incident cases — DE affected during platform issues<br><br><strong>Key bug:</strong> "Data Extension Extract convert to UTF8 error" (W-21786871) is a specific repeatable issue.</p></div>
+    <div class="cat c-unc"><h4>❓ Unclassified — 39%</h4><div class="cat-pct">~504 cases</div><p>518 cases with no sub-cause — the highest absolute unclassified count of any cluster. Many are likely additional training/config cases but product bugs may be hidden. 16 Product Bug cases explicitly tagged suggests actual bug count is higher.</p></div>
+  </div>
+  <div class="miss-grid">
+    <div class="miss"><h4>Missing: Data Import End-to-End Guide</h4><ul><li>No consolidated guide covering: Import Activity setup, FTP file path configuration, column mapping, error handling, and "file not found" troubleshooting</li><li>"Import Activity failing to locate file in Enhanced FTP" was filed as Sev 1 — this is a setup issue, not a product outage</li><li>Estimated deflection: <strong>200–250 cases</strong></li></ul></div>
+    <div class="miss"><h4>Missing: Retention Policy &amp; Data Lifecycle Guide</h4><ul><li>Multiple cases: "Retention policy setup", "records deleted unexpectedly" — customers don't know how retention policies affect their data</li><li>Estimated deflection: <strong>50–80 cases</strong></li></ul></div>
+    <div class="miss"><h4>Missing: Data Extract Output Format Reference</h4><ul><li>UTF8 conversion errors, ZIP vs flat file confusion, gzip option not available</li><li>GUS item W-21786871 (UTF8 extract error) still active</li></ul></div>
+    <div class="miss"><h4>Missing: Better Import Activity Error Messages</h4><ul><li>59 "error message issue" cases — import errors show generic failures with no actionable guidance</li><li>Errors like "A data extension with the expected name was not found" should include a help link and next steps</li></ul></div>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Action</th><th>Type</th><th class="num">Est. Deflection</th><th>Effort</th><th>Owner</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">1</td><td><strong>Publish "Data Import Activity — Complete Setup &amp; Troubleshooting Guide"</strong><br><span style="font-size:11px;color:#666">Cover: FTP paths, column mapping, file not found errors, Enhanced FTP setup, import scheduling</span></td><td><span class="ip ip-b">Self-Service</span></td><td class="num"><strong>200–250</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Docs / SE Team</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">2</td><td><strong>Publish "Data Extension Retention Policy Guide"</strong></td><td><span class="ip ip-b">Self-Service</span></td><td class="num"><strong>50–80</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Docs</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">3</td><td><strong>Improve Import Activity error messages with actionable next steps</strong></td><td><span class="ip ip-h">Product Fix</span></td><td class="num"><strong>40–60</strong></td><td><span class="ep ep-me">Medium</span></td><td><span class="op">Product / Eng</span></td><td><span class="ip ip-m">P2</span></td></tr>
+        <tr><td class="rank">4</td><td><strong>Engage R&amp;D on W-21786871 (UTF8 Data Extract error)</strong></td><td><span class="ip ip-h">Product Fix</span></td><td class="num"><strong>20–30</strong></td><td><span class="ep ep-me">Medium</span></td><td><span class="op">Support Manager + R&amp;D</span></td><td><span class="ip ip-m">P2</span></td></tr>
+        <tr><td class="rank">5</td><td><strong>Guided setup wizard for Import Activity in Automation Studio</strong></td><td><span class="ip ip-h">Product Enhancement</span></td><td class="num"><strong>100+</strong></td><td><span class="ep ep-hi">High</span></td><td><span class="op">Product</span></td><td><span class="ip ip-l">P3</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── CLUSTER 4 DETAIL ─── -->
+  <div class="es-cluster-sec">🔑 Cluster 4 — Login, Access &amp; SSO Issues (747 cases)</div>
+  <div class="sum-bar">
+    <div class="sb t4"><div class="sl">Total Cases</div><div class="sv">747</div><div class="sh">4.0% of all ES cases</div></div>
+    <div class="sb t4"><div class="sl">GUS Cases</div><div class="sv">37</div><div class="sh">5.0% GUS rate</div></div>
+    <div class="sb t1"><div class="sl">Knowledge Gap</div><div class="sv">~44%</div><div class="sh">SSO config confusion</div></div>
+    <div class="sb t2"><div class="sl">Platform Issues</div><div class="sv">~14%</div><div class="sh">Errors + outages + limits</div></div>
+    <div class="sb t4"><div class="sl">Unclassified</div><div class="sv">35%</div><div class="sh">260 unclassified cases</div></div>
+    <div class="sb t5"><div class="sl">Deflectable</div><div class="sv">~329</div><div class="sh">Mostly SSO config cases</div></div>
+  </div>
+  <div style="background:white;border-radius:10px;padding:18px 20px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px">
+    <div class="sbc"><div class="sbl"><span>User needs instructions or training</span><span>285 &nbsp;(38.4%)</span></div><div class="sbtr"><div class="sbfi f1" style="width:100%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Not classified (no sub-cause)</span><span>260 &nbsp;(35.0%)</span></div><div class="sbtr"><div class="sbfi f6" style="width:91.2%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Error message issue</span><span>46 &nbsp;(6.2%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:16.1%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Need better documentation</span><span>39 &nbsp;(5.3%)</span></div><div class="sbtr"><div class="sbfi f1" style="width:13.7%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Feature limit / activation</span><span>29 &nbsp;(3.9%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:10.2%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Incident / Outage / Maintenance</span><span>25 &nbsp;(3.4%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:8.8%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Provisioning</span><span>16 &nbsp;(2.2%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:5.6%"></div></div></div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat c-def"><h4>📚 Knowledge / Training Gap — 44%</h4><div class="cat-pct">~329 cases</div><p><strong>What's happening:</strong> SSO configuration with third-party IDPs is complex and poorly documented for specific providers.<br><br><strong>Real examples:</strong><br>· "Azure AD SSO Integration Error" — multiple cases, both Urgent and Medium<br>· "SSO Certificate Expiry Discrepancy" — cert renewal process unknown<br>· "SSO Certificate update process and prerequisites"<br>· "Missing option to upload Okta metadata for SSO"<br>· "Change IDP to MyLogin" — setup guidance needed<br>· "Urgent FTP Access Issue – WinSCP Access Denied" (filed as Sev 1)</p></div>
+    <div class="cat c-prod"><h4>🐛 Platform / Product Issues — 14%</h4><div class="cat-pct">~105 cases</div><p><strong>What's happening:</strong><br>· 46 error message cases — SSO failure errors are cryptic (e.g. "Fatal Profile Error")<br>· 29 feature limit cases — customers don't know what SSO options exist<br>· 25 incident cases — SSO outages generating case spikes<br>· 16 provisioning cases — SSO entitlement / access setup issues<br><br><strong>Risk:</strong> 5.0% GUS rate is notable — SSO errors are driving engineering investigations.</p></div>
+    <div class="cat c-unc"><h4>❓ Unclassified — 35%</h4><div class="cat-pct">~261 cases</div><p>260 cases without sub-cause. SSO outage cases during incidents are often not tagged as "Incident" — they're left unclassified, masking the true outage-driven case volume.</p></div>
+  </div>
+  <div class="miss-grid">
+    <div class="miss"><h4>Missing: SSO Setup Guides per IDP (Azure AD, Okta, MyLogin)</h4><ul><li>Azure AD SSO integration errors appear in 10+ cases — no specific guide for Azure AD with MC Engagement</li><li>Okta metadata upload confusion = multiple cases</li><li>Per-IDP step-by-step guides would deflect <strong>100–150 cases</strong></li></ul></div>
+    <div class="miss"><h4>Missing: SSO Certificate Renewal Runbook</h4><ul><li>"SSO Certificate Expiry Discrepancy", "cert update process and prerequisites" — customers don't know the renewal procedure</li><li>A proactive renewal guide + 30-day advance notification email would prevent the majority of cert expiry cases</li></ul></div>
+    <div class="miss"><h4>Missing: Proactive SSO Cert Expiry Notification</h4><ul><li>No automated notification to admins before SSO certificates expire</li><li>Cases are filed reactively when users get locked out — a 30/7/1 day advance email would eliminate this pattern entirely</li><li>Estimated deflection: <strong>30–50 cases</strong></li></ul></div>
+    <div class="miss"><h4>Missing: Better SSO Error Messages</h4><ul><li>46 "error message issue" cases — "Fatal Profile Error" and similar SSO errors give no actionable guidance</li><li>Each SSO error should link to a specific help article and suggest a resolution step</li></ul></div>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Action</th><th>Type</th><th class="num">Est. Deflection</th><th>Effort</th><th>Owner</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">1</td><td><strong>Publish SSO Setup Guides for Azure AD, Okta, and MyLogin</strong><br><span style="font-size:11px;color:#666">Step-by-step per-IDP setup, metadata upload, common error codes per IDP</span></td><td><span class="ip ip-b">Self-Service</span></td><td class="num"><strong>100–150</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Docs / SE Team</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">2</td><td><strong>Implement proactive SSO certificate expiry notifications (30/7/1 day)</strong></td><td><span class="ip ip-h">Product Enhancement</span></td><td class="num"><strong>30–50</strong></td><td><span class="ep ep-me">Medium</span></td><td><span class="op">Product</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">3</td><td><strong>Publish SSO Certificate Renewal Runbook</strong></td><td><span class="ip ip-b">Self-Service</span></td><td class="num"><strong>30–40</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Docs</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">4</td><td><strong>Improve SSO error messages — link to IDP-specific help</strong></td><td><span class="ip ip-h">Product Fix</span></td><td class="num"><strong>30–45</strong></td><td><span class="ep ep-me">Medium</span></td><td><span class="op">Product / Eng</span></td><td><span class="ip ip-m">P2</span></td></tr>
+        <tr><td class="rank">5</td><td><strong>In-app SSO incident banner when authentication service is degraded</strong></td><td><span class="ip ip-m">Proactive Comms</span></td><td class="num"><strong>20–25</strong></td><td><span class="ep ep-me">Medium</span></td><td><span class="op">Product + Support Ops</span></td><td><span class="ip ip-m">P2</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── CLUSTER 5 DETAIL ─── -->
+  <div class="es-cluster-sec">🔐 Cluster 5 — Security: Secrets, Expiry &amp; Notifications (597 cases)</div>
+  <div class="sum-bar">
+    <div class="sb t5"><div class="sl">Total Cases</div><div class="sv">597</div><div class="sh">3.2% of all ES cases</div></div>
+    <div class="sb t5"><div class="sl">GUS Cases</div><div class="sv">5</div><div class="sh">0.8% GUS rate (very low)</div></div>
+    <div class="sb t1"><div class="sl">Knowledge Gap</div><div class="sv">~41%</div><div class="sh">Secret rotation confusion</div></div>
+    <div class="sb t2"><div class="sl">Proactive/Incident</div><div class="sv">~8%</div><div class="sh">Policy deadlines</div></div>
+    <div class="sb t4"><div class="sl">Unclassified</div><div class="sv">39%</div><div class="sh">165 unclassified cases</div></div>
+    <div class="sb t5"><div class="sl">Deflectable</div><div class="sv">~500</div><div class="sh">Nearly 100% preventable</div></div>
+  </div>
+  <div style="background:white;border-radius:10px;padding:18px 20px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px">
+    <div class="sbc"><div class="sbl"><span>Not classified (no sub-cause)</span><span>165 &nbsp;(39.3%)</span></div><div class="sbtr"><div class="sbfi f6" style="width:100%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>User needs instructions or training</span><span>134 &nbsp;(31.9%)</span></div><div class="sbtr"><div class="sbfi f1" style="width:81.2%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Need better documentation</span><span>38 &nbsp;(9.1%)</span></div><div class="sbtr"><div class="sbfi f1" style="width:23.0%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Incident / Outage / Maintenance</span><span>21 &nbsp;(5.0%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:12.7%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Error message issue</span><span>11 &nbsp;(2.6%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:6.7%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Provisioning</span><span>9 &nbsp;(2.1%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:5.5%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Feature limit / activation</span><span>9 &nbsp;(2.1%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:5.5%"></div></div></div>
+    <div class="sbc"><div class="sbl"><span>Product Bug</span><span>3 &nbsp;(0.7%)</span></div><div class="sbtr"><div class="sbfi f2" style="width:1.8%"></div></div></div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat c-def"><h4>📚 Proactive Comms / Knowledge Gap — ~83%</h4><div class="cat-pct">~500 cases</div><p><strong>What's happening:</strong> This cluster is almost entirely driven by customers not being aware of security policy changes, deadlines, and rotation requirements. Almost none of these should require live support.<br><br><strong>Real examples:</strong><br>· "What is required for the June 1, 2026 deadline relating to Enable and Enforce App Client Secret Rotation?" — 50+ similar cases for one deadline<br>· "Security Update: Dormant MCE Installed Package Secrets Invalidated"<br>· "Marketing Cloud Engagement Secret Expiration and Rotation"<br>· "ExceededExpirationPolicy error for journeys"</p></div>
+    <div class="cat c-prod"><h4>🐛 Platform / Product Issues — 8%</h4><div class="cat-pct">~48 cases</div><p><strong>What's happening:</strong><br>· 21 incident cases — some security policy enforcement triggers were unexpected platform actions<br>· 11 error message cases — "Access Denied" for installed packages not self-explanatory<br>· 9 provisioning cases<br>· Very low GUS rate (0.8%) confirms this is not a product bug cluster</p></div>
+    <div class="cat c-unc"><h4>❓ Unclassified — 39%</h4><div class="cat-pct">~233 cases</div><p>Many unclassified cases are customers responding to Salesforce policy communications — but they're not tagged "Proactive Outbound". This makes it impossible to measure how much volume is driven by Salesforce-initiated changes vs genuine customer issues.</p></div>
+  </div>
+  <div class="miss-grid">
+    <div class="miss"><h4>Missing: Automated Secret Expiry Notifications</h4><ul><li>No in-product or email notification before installed package secrets expire or are invalidated</li><li>Customers only find out when the API stops working — then file a Sev 1 or 2 case in a panic</li><li>30/7/1 day advance notifications to org admins would eliminate <strong>300–400 cases</strong> from this cluster</li></ul></div>
+    <div class="miss"><h4>Missing: Proactive Trust Post Before Security Deadlines</h4><ul><li>"June 1, 2026 deadline for App Client Secret Rotation" generated 50+ identical cases</li><li>A single trust.salesforce.com announcement + email to org admins 30 days before the deadline would have prevented essentially all of them</li><li>This is the <strong>highest single ROI action</strong> in the entire top-5 cluster analysis</li></ul></div>
+    <div class="miss"><h4>Missing: Secret Rotation Step-by-Step Guide</h4><ul><li>Customers know they need to rotate secrets but don't know the exact steps in Setup</li><li>A short guide (enable rotation → test → enforce) would answer the majority of training questions in this cluster</li></ul></div>
+    <div class="miss"><h4>Missing: In-Product Rotation Wizard &amp; Status Dashboard</h4><ul><li>No in-product view showing secret health, expiry dates, and rotation status across all installed packages</li><li>Customers can't proactively manage what they can't see — this forces reactive case filing</li></ul></div>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Action</th><th>Type</th><th class="num">Est. Deflection</th><th>Effort</th><th>Owner</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td class="rank">1</td><td><strong>Implement automated secret expiry notifications (30/7/1 day)</strong><br><span style="font-size:11px;color:#666">Email org admins before any installed package secret or SSO certificate expires. Single highest ROI action</span></td><td><span class="ip ip-h">Product Enhancement</span></td><td class="num"><strong>300–400</strong></td><td><span class="ep ep-me">Medium</span></td><td><span class="op">Product / Eng</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">2</td><td><strong>Publish trust.salesforce.com post 30 days before any security policy deadline</strong><br><span style="font-size:11px;color:#666">June 2026 secret rotation deadline = 50+ identical cases. One announcement prevents all of them</span></td><td><span class="ip ip-m">Proactive Comms</span></td><td class="num"><strong>50–80</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Support Ops / PMM</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">3</td><td><strong>Publish "App Client Secret Rotation — Step-by-Step Guide"</strong></td><td><span class="ip ip-b">Self-Service</span></td><td class="num"><strong>80–100</strong></td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Docs</span></td><td><span class="ip ip-h">P1</span></td></tr>
+        <tr><td class="rank">4</td><td><strong>Add secret health dashboard to Setup — show expiry dates for all installed packages</strong></td><td><span class="ip ip-h">Product Enhancement</span></td><td class="num"><strong>100+</strong></td><td><span class="ep ep-hi">High</span></td><td><span class="op">Product / Eng</span></td><td><span class="ip ip-m">P2</span></td></tr>
+        <tr><td class="rank">5</td><td><strong>Tag proactive outbound cases correctly at case close</strong></td><td><span class="ip ip-l">Process</span></td><td class="num">0 direct</td><td><span class="ep ep-lo">Low</span></td><td><span class="op">Support Ops</span></td><td><span class="ip ip-m">P2</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ins-grid" style="margin-top:14px">
+    <div class="ins gd"><div class="it">✅ Lowest GUS Rate of Top 5 (0.8%)</div><p>Only 5 GUS cases across 597 — this is not a product bug cluster. Every case here is a communication and notification failure. The entire cluster can be addressed without a single code change.</p></div>
+    <div class="ins al"><div class="it">🚨 50+ Identical Cases From One Deadline</div><p>The June 1, 2026 App Client Secret Rotation deadline generated a wave of identical questions. One proactive email + trust post would have prevented all of them.</p></div>
+    <div class="ins wn"><div class="it">⚠️ Dormant Secret Invalidation = Surprise to Customers</div><p>"Security Update: Dormant MCE Installed Package Secrets Invalidated" — Salesforce automatically invalidated secrets without adequate notice. This pattern will repeat with every future security enforcement action.</p></div>
+    <div class="ins in"><div class="it">📊 ~39% Unclassified Hides Proactive Volume</div><p>Many unclassified cases are customers responding to Salesforce policy communications — but they're not tagged "Proactive Outbound". This makes it impossible to measure true policy-driven volume.</p></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════ TAB 8: JB PLAYBOOK ══════════ -->
+<div id="jb-playbook" class="tab-content">
+<div class="container">
+
+<div class="sec or" data-i="📖">JB New Hire Support Playbook — Top 5 Issue Clusters</div>
+<div class="kpi-row">
+  <div class="kpi or"><div class="lbl">Clusters Covered</div><div class="val">5</div><div class="hint">44.8% of all JB cases</div></div>
+  <div class="kpi bl"><div class="lbl">Slack Channel</div><div class="val">#support-mce-journey-contact-audience-builder</div></div>
+  <div class="kpi pu"><div class="lbl">KB Articles Linked</div><div class="val">12</div><div class="hint">Validated from orgCS</div></div>
+  <div class="kpi gn"><div class="lbl">Audience</div><div class="val">New Hires</div><div class="hint">Day-1 ready reference</div></div>
+</div>
+<p class="note" style="margin-bottom:18px">⚡ <strong>How to use:</strong> Click a cluster below to expand the full playbook. Each playbook gives you: first-response checklist → diagnosis questions → step-by-step resolution → KB articles → escalation criteria → known bugs.</p>
+
+<!-- ══ CLUSTER 1: CONTACT BUILDER / AUDIENCE BUILDER ══ -->
+<div style="background:white;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px;overflow:hidden">
+  <div style="background:#4a1942;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="togglePB('pb1')">
+    <span style="font-size:14px;font-weight:700">🏢 Cluster 1 — Contact Builder &amp; Audience Builder &nbsp;<span style="background:rgba(255,255,255,.15);padding:2px 10px;border-radius:10px;font-size:11px">1,309 cases · 4.7% GUS · 140 Sev 1</span></span>
+    <span id="pb1-icon" style="font-size:18px">▼</span>
+  </div>
+  <div id="pb1" style="padding:18px 20px;display:block">
+
+    <div class="bar-grid" style="margin-bottom:14px">
+      <div class="cb" style="border-left:4px solid #4a1942">
+        <h4 style="color:#4a1942">📋 First Response Checklist (Do These First)</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          ☐ Collect: EID, MID (BU), Stack, Database number<br>
+          ☐ Ask: What are they trying to do in Contact Builder / Audience Builder?<br>
+          ☐ Ask: Is the Data Extension visible in Email Studio but not Contact Builder?<br>
+          ☐ Ask: Is Audience Builder enabled on the account?<br>
+          ☐ Ask: Is this a fresh setup or a previously working configuration?<br>
+          ☐ Check: Impersonation access granted? (<code>Marketing Cloud Login Access</code>)<br>
+          ☐ Grant yourself impersonation and reproduce the issue
+        </p>
+      </div>
+      <div class="cb" style="border-left:4px solid #ff6900">
+        <h4 style="color:#ff6900">❓ Key Diagnosis Questions to Ask Customer</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          1. Which specific folder/section is missing — DE folder, Attribute Group, or Population?<br>
+          2. Was a Data Cloud segment activation involved recently?<br>
+          3. Are multiple BUs affected or just one?<br>
+          4. Has anything changed recently — new BU connected, integration user change, MC Connect re-auth?<br>
+          5. Can they see the DE in Email Studio → Data Extensions?<br>
+          6. What error message appears (exact text)?
+        </p>
+      </div>
+    </div>
+
+    <div class="sec or" data-i="🔍" style="margin-top:0">Common Scenarios &amp; Resolution Steps</div>
+
+    <div class="tw" style="margin-bottom:10px">
+      <table>
+        <thead class="or-head"><tr><th>Scenario</th><th>Root Cause</th><th>Resolution Steps</th></tr></thead>
+        <tbody class="or-body">
+          <tr>
+            <td><strong>DE visible in Email Studio but not in Contact Builder folder tree</strong></td>
+            <td>Data Cloud segment sync creates DE in Email Studio namespace but not Contact Builder namespace. Known cross-cloud gap.</td>
+            <td>1. Confirm DE exists in Email Studio → Subscribers → Data Extensions<br>2. Confirm DE is NOT in Contact Builder → Data Extensions<br>3. <strong>Workaround:</strong> Create a Filtered DE from the Email Studio DE → this can be used as JB Entry Source<br>4. Open cross-cloud swarm with Data Cloud team if customer blocked<br>5. If repeating, file GUS</td>
+          </tr>
+          <tr>
+            <td><strong>Audience Builder returns 0 contacts / "no results"</strong></td>
+            <td>Attribute Group not properly linked, Population misconfigured, or Contact data not yet synced</td>
+            <td>1. Go to Contact Builder → Data Designer → verify Attribute Group is linked to correct DE with correct relationship<br>2. Check Population is set and Contact Count is &gt; 0<br>3. Verify the DE has data (run a SOQL preview or check row count)<br>4. If Data Cloud: verify segment activation completed and DE has rows<br>5. Try rebuilding Attribute Group from scratch in a test BU</td>
+          </tr>
+          <tr>
+            <td><strong>Audience Builder feature not enabled / greyed out</strong></td>
+            <td>Audience Builder not provisioned for account or BU</td>
+            <td>1. Check via orgCS: <code>SELECT Id, Name FROM Account WHERE Name = '...'</code><br>2. Review KB Article <strong>000380199</strong> — Enable Audience Builder steps<br>3. Confirm all 3 BUs have AB enabled if multi-BU setup (per Slack case: MIDs 524009661, 524009675, 524009687 pattern)<br>4. If last step of enable flow errors: collect exact error text, stack, EID and post to <strong>#support-mce-journey-contact-audience-builder</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Contact Builder errors when disconnecting integration users</strong></td>
+            <td>Extra BUs connected to MC Connect integration user causing CB access errors</td>
+            <td>1. Go to Setup → Apps → MC Connect → review integration users<br>2. Disconnect extra BUs per recommended action<br>3. If errors persist after disconnect, escalate — verify no circular dependency in Contact Model (known issue: "Detected a loop in contacts model")<br>4. If loop detected: identify which relationship flip is causing it and request R&amp;D relationship flip via Change Request</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bar-grid">
+      <div class="cb">
+        <h4>📚 Knowledge Articles (orgCS Validated)</h4>
+        <p style="font-size:12px;line-height:1.9">
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002uhZyIAI/view" target="_blank" style="color:#0070d2">📄 Audience Builder — #005324834</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002uha3IAA/view" target="_blank" style="color:#0070d2">📄 Audience Builder Scenarios — #005324818</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx0000033z6rIAA/view" target="_blank" style="color:#0070d2">📄 Audience Builder Roles — #005324841</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx00000344A3IAI/view" target="_blank" style="color:#0070d2">📄 What Happens to Data from Audience Builder? — #005330215</a>
+        </p>
+      </div>
+      <div class="cb">
+        <h4>🚨 Escalate to GUS / Senior Engineer When</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          • DE consistently not appearing in Contact Builder despite correct provisioning<br>
+          • "Detected a loop in contacts model" error blocking all journeys<br>
+          • Audience Builder returns wrong counts vs Email Studio DE row count<br>
+          • Customer blocked on Sev 1 with active Journey unable to launch<br>
+          • Cross-cloud (Data Cloud + MC) DE sync issue — loop in #support-mce-journey-contact-audience-builder
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CLUSTER 2: JOURNEY ERRORS & HARD ERRORS ══ -->
+<div style="background:white;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px;overflow:hidden">
+  <div style="background:#c23934;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="togglePB('pb2')">
+    <span style="font-size:14px;font-weight:700">💥 Cluster 2 — Journey Errors &amp; Hard Errors &nbsp;<span style="background:rgba(255,255,255,.15);padding:2px 10px;border-radius:10px;font-size:11px">543 cases · 9.6% GUS · 22.7% Sev1 GUS</span></span>
+    <span id="pb2-icon" style="font-size:18px">▼</span>
+  </div>
+  <div id="pb2" style="padding:18px 20px;display:block">
+
+    <div class="bar-grid" style="margin-bottom:14px">
+      <div class="cb" style="border-left:4px solid #c23934">
+        <h4 style="color:#c23934">📋 First Response Checklist</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          ☐ Collect: EID, MID, Stack, Database, Journey Name, Journey Version<br>
+          ☐ Collect: Exact error message / error code (full stack trace if available)<br>
+          ☐ Ask: Which contacts are affected — all or a subset?<br>
+          ☐ Ask: Did this work before? What changed?<br>
+          ☐ Check: JB Interactions tab → error count and error description<br>
+          ☐ Run OMM errors query (see below) to get full error chain<br>
+          ☐ Check: Is the email content / AMPscript recently modified?
+        </p>
+      </div>
+      <div class="cb" style="border-left:4px solid #ff6900">
+        <h4 style="color:#ff6900">🔑 OMM Error Code Reference</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          <strong>OMM_FUNC_EXEC_ERROR</strong> — Function execution failed. Check inner exception for root cause (usually missing DE, null value, or bad ContentBlock reference)<br>
+          <strong>OMM_FUNC_SYNTAX_ERR</strong> — Syntax error in AMPscript function (e.g. missing closing parenthesis)<br>
+          <strong>OMM_SCRIPT_SYNTAX_ERR</strong> — Invalid script expression<br>
+          <strong>OMM_DATA_EXT_REF_ERR</strong> — DE referenced in AMPscript not found<br>
+          <strong>OMM_N_SUB_EMAIL_BLD_ERR</strong> — Informational: build error threshold hit, job continues<br>
+          <strong>ScriptRaiseError</strong> — AMPscript RaiseError() intentionally fired (suppression logic)<br>
+          <strong>ExceededExpirationPolicy</strong> — Messages held while TS paused exceeded expiry window
+        </p>
+      </div>
+    </div>
+
+    <div class="sec or" data-i="🔍" style="margin-top:0">Diagnostic SQL Queries (Backend — Requires DB Access)</div>
+    <div class="tw" style="margin-bottom:10px">
+      <table>
+        <thead class="or-head"><tr><th>Purpose</th><th>Query</th></tr></thead>
+        <tbody class="or-body">
+          <tr><td>Find soft errors for a Job</td><td><code style="font-size:10px">SELECT jse.subscriberkey, jse.createddate, jsec.errorcode, jsec.description FROM dbo.jobsubscribererror jse WITH (nolock) JOIN dbo.jobsubscribererrorcode jsec ON jsec.errorcodeid = jse.errorcodeid WHERE jobid IN (SELECT jobid FROM triggeredsendjob WITH (nolock) WHERE triggeredsendid = '[TSID]')</code></td></tr>
+          <tr><td>Find OMM errors / exclusion script errors</td><td><code style="font-size:10px">SELECT js.jobid, js.subscriberid, jss.[status], jss.statusdescription, M.emailaddr_ FROM dbo.tbljobsubscriber js WITH (nolock) JOIN members_ M WITH (nolock) ON memberid_ = js.subscriberid JOIN jobsubscriberstatus jss (nolock) ON js.jobsubscriberstatusid = jss.jobsubscriberstatusid WHERE jobid IN (SELECT jobid FROM triggeredsendjob WITH (nolock) WHERE triggeredsendid = '[TSID]') AND js.jobsubscriberstatusid &lt;&gt; 1</code></td></tr>
+          <tr><td>Get TSID from Journey Name</td><td><code style="font-size:10px">SELECT * FROM interactionstudio.definition WITH (nolock) WHERE mid = [MID] AND name = '[JourneyName]'<br>SELECT * FROM interactionstudio.activity WITH (nolock) WHERE definitionID = '[JourneyDefinitionID]'</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sec or" data-i="🔧" style="margin-top:0">Resolution Steps by Error Type</div>
+    <div class="tw" style="margin-bottom:10px">
+      <table>
+        <thead class="or-head"><tr><th>Error</th><th>Likely Cause</th><th>Resolution</th></tr></thead>
+        <tbody class="or-body">
+          <tr>
+            <td><strong>OMM_FUNC_EXEC_ERROR → OMM_DATA_EXT_REF_ERR</strong></td>
+            <td>ContentBlock references a DE that was renamed, deleted, or is in a different BU</td>
+            <td>1. Identify the DE name in the error (<em>Data Extension Name: X</em>)<br>2. Search for DE in Email Studio — check if renamed or moved<br>3. Fix ContentBlock reference to point to correct DE<br>4. Re-publish email and re-activate TS<br>5. KB: <strong>000393029</strong></td>
+          </tr>
+          <tr>
+            <td><strong>OMM_FUNC_SYNTAX_ERR / OMM_SCRIPT_SYNTAX_ERR</strong></td>
+            <td>AMPscript syntax error — missing closing parenthesis, malformed RedirectTo or CloudPagesURL call</td>
+            <td>1. Open email in Content Builder<br>2. Find the function in the error (e.g. <code>RedirectTo(AttributeValue(?subskey</code>)<br>3. Fix syntax — add missing <code>)</code><br>4. Preview the email for the affected subscriber key — verify no error<br>5. Re-publish. Note: contacts already in "Queued" state may need TS restart</td>
+          </tr>
+          <tr>
+            <td><strong>ScriptRaiseError</strong></td>
+            <td>Intentional RaiseError() in AMPscript suppression logic fired (e.g. EmailPreference_Suppression content block)</td>
+            <td>1. This is <em>usually expected behavior</em> — subscriber meets suppression criteria<br>2. Identify which content block fires RaiseError (check error description)<br>3. Verify subscriber's preference/suppression status<br>4. If customer believes it's incorrect: pull subscriber data and verify against suppression list logic<br>5. KB: <strong>000393029</strong></td>
+          </tr>
+          <tr>
+            <td><strong>ExceededExpirationPolicy</strong></td>
+            <td>Triggered Send was paused/deactivated — messages queued during pause exceeded the expiry window (default: 3 days)</td>
+            <td>1. Check TS log: <code>SELECT UserName, UserNote, CreatedDate FROM triggeredsendlog WHERE triggeredsendID='[TSID]' ORDER BY createddate DESC</code><br>2. Confirm when TS was deactivated and re-activated<br>3. Contacts that queued during the gap are expired — they will NOT be re-sent automatically<br>4. If customer needs resend: identify affected subscriber keys from OMM errors query, re-inject into journey or send manually<br>5. KB: <strong>000981147</strong></td>
+          </tr>
+          <tr>
+            <td><strong>"This contact opted out" hard error — mass failures</strong></td>
+            <td>Contact's subscription status is "Unsubscribed" at All Subscribers level</td>
+            <td>1. Check subscriber status: <code>SELECT Status FROM subscribers_ WHERE subscriberkey = '[key]'</code><br>2. If status = Unsubscribed: confirm with customer if this is expected<br>3. If incorrectly unsubscribed: investigate what changed their status (import, automation, API)<br>4. Customer must re-subscribe contacts intentionally — cannot be done by support</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bar-grid">
+      <div class="cb">
+        <h4>📚 Knowledge Articles (orgCS Validated)</h4>
+        <p style="font-size:12px;line-height:1.9">
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002GE7VIAW/view" target="_blank" style="color:#0070d2">📄 AMPscript OMM_FUNC_EXEC_ERROR — #000393029</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000001ea68IAA/view" target="_blank" style="color:#0070d2">📄 Common Troubleshooting: Triggered Send Errors — #000382883</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002CnjlIAC/view" target="_blank" style="color:#0070d2">📄 AMPscript: Handle Null/Empty Values — #000393055</a>
+        </p>
+      </div>
+      <div class="cb">
+        <h4>🚨 Escalate to GUS / Senior Engineer When</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          • Error is platform-level (not content/config related) — same error across multiple customers on same stack<br>
+          • Inner exception points to a platform service failure, not AMPscript<br>
+          • Sev 1: 10+ contacts erroring on same error code across an active journey<br>
+          • Error persists after content fix and TS re-activation<br>
+          • Post to <strong>#support-mce-journey-contact-audience-builder</strong> with: EID, MID, TSID, full OMM stack trace
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CLUSTER 3: JOURNEY EMAIL NOT SENT ══ -->
+<div style="background:white;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px;overflow:hidden">
+  <div style="background:#0070d2;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="togglePB('pb3')">
+    <span style="font-size:14px;font-weight:700">📧 Cluster 3 — Journey Email Not Sent / Not Delivered &nbsp;<span style="background:rgba(255,255,255,.15);padding:2px 10px;border-radius:10px;font-size:11px">467 cases · 4.5% GUS · 73 Sev 1</span></span>
+    <span id="pb3-icon" style="font-size:18px">▼</span>
+  </div>
+  <div id="pb3" style="padding:18px 20px;display:block">
+
+    <div class="bar-grid" style="margin-bottom:14px">
+      <div class="cb" style="border-left:4px solid #0070d2">
+        <h4 style="color:#0070d2">📋 First Response Checklist</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          ☐ Collect: EID, MID, Stack, Journey Name, Journey Version, Email Activity Name<br>
+          ☐ Get: Triggered Send ID (TSID) — from Journey → Interactions tab<br>
+          ☐ Ask: Did JB show the contact as "sent" or was it an error?<br>
+          ☐ Ask: Is the email published and active in Content Builder?<br>
+          ☐ Ask: Is this all contacts or specific ones? Get sample subscriber keys<br>
+          ☐ CRITICAL: JB showing "sent" does NOT guarantee delivery — JB passes to Triggered Send which sends independently<br>
+          ☐ Check the Triggered Send status (Active/Paused) in Email Studio → Interactions
+        </p>
+      </div>
+      <div class="cb" style="border-left:4px solid #ff6900">
+        <h4 style="color:#ff6900">⚡ The Golden Rule (From KB #000393333)</h4>
+        <p style="font-size:12px;color:#444;line-height:1.7;background:#fff8f0;padding:10px;border-radius:6px">
+          <strong>"If a Contact made it to the Email Activity and was successfully processed, it does NOT guarantee the email was sent. It means Journey Builder successfully passed the Contact Key to the Triggered Send to deliver the message."</strong><br><br>
+          → Always check the <em>Triggered Send</em>, not just JB status.<br>
+          → Reference KB: <strong>000393333</strong> and <strong>000363322</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="sec or" data-i="🔧" style="margin-top:0">Step-by-Step Diagnostic Flow</div>
+    <div class="tw" style="margin-bottom:10px">
+      <table>
+        <thead class="or-head"><tr><th>Step</th><th>What to Check</th><th>Queries / Actions</th></tr></thead>
+        <tbody class="or-body">
+          <tr><td class="rank">1</td><td><strong>Confirm contact entered JB email activity</strong></td><td>Journey → Interactions → check contact status. If "Error" — go to Cluster 2 playbook. If "Sent" — proceed to Step 2.</td></tr>
+          <tr><td class="rank">2</td><td><strong>Get the Triggered Send ID (TSID)</strong></td><td><code style="font-size:10px">SELECT * FROM interactionstudio.definition WITH (nolock) WHERE mid=[MID] AND name='[JourneyName]'<br>SELECT * FROM interactionstudio.activity WITH (nolock) WHERE definitionID='[DefinitionID]'</code></td></tr>
+          <tr><td class="rank">3</td><td><strong>Check Triggered Send status &amp; history</strong></td><td><code style="font-size:10px">SELECT UserName, UserNote, CreatedDate FROM triggeredsendlog WITH (nolock) WHERE triggeredsendID='[TSID]' ORDER BY createddate DESC</code><br>⚠ If you see Deactivate followed by late Activate — ExceededExpirationPolicy likely cause</td></tr>
+          <tr><td class="rank">4</td><td><strong>Check for OMM / send errors for the job</strong></td><td>Run soft errors query and OMM errors query from Cluster 2. Look for: ScriptRaiseError, ExceededExpirationPolicy, OMM_FUNC_EXEC_ERROR</td></tr>
+          <tr><td class="rank">5</td><td><strong>Check subscriber status in All Subscribers</strong></td><td><code style="font-size:10px">SELECT Status, EmailAddress FROM subscribers_ WHERE subscriberkey = '[key]'</code><br>Status = Unsubscribed or Held = email will not send</td></tr>
+          <tr><td class="rank">6</td><td><strong>Check if email is published and Sender Profile active</strong></td><td>Email Studio → Content Builder → verify email Status = "Published". Check Sender Profile for active From Address and verified domain (DKIM/SPF).</td></tr>
+          <tr><td class="rank">7</td><td><strong>For "Queued" status after content fix</strong></td><td>Queued messages that errored do NOT automatically retry. Customer must: (a) fix content, (b) re-activate TS, (c) re-inject contacts into journey. Old queued messages remain stuck.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bar-grid">
+      <div class="cb">
+        <h4>📚 Knowledge Articles (orgCS Validated)</h4>
+        <p style="font-size:12px;line-height:1.9">
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx00000309cfIAA/view" target="_blank" style="color:#0070d2">📄 Email Send via JB Does Not Send to All Contacts — #000393333</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx0000030s1tIAA/view" target="_blank" style="color:#0070d2">📄 Troubleshooting MC Email Sends — #000389518</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000001ea68IAA/view" target="_blank" style="color:#0070d2">📄 Common Troubleshooting: Triggered Send Errors — #000382883</a>
+        </p>
+      </div>
+      <div class="cb">
+        <h4>🚨 Escalate to GUS / Senior Engineer When</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          • Triggered Send is Active, subscriber is Subscribed, content is published, but email still not delivered<br>
+          • Suppression list errors affecting contacts that customer confirms should NOT be suppressed<br>
+          • Same failure pattern across multiple journeys on the same MID/Stack<br>
+          • 73 Sev 1 pattern — platform-level sending classification issue suspected<br>
+          • Post to <strong>#support-mce-journey-contact-audience-builder</strong> with TSID + sample subscriber keys + OMM error dump
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CLUSTER 4: CONTACT DELETION ══ -->
+<div style="background:white;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px;overflow:hidden">
+  <div style="background:#7b5ea7;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="togglePB('pb4')">
+    <span style="font-size:14px;font-weight:700">🗑 Cluster 4 — Contact Deletion Issues (GDPR/CCPA) &nbsp;<span style="background:rgba(255,255,255,.15);padding:2px 10px;border-radius:10px;font-size:11px">341 cases · 7.6% GUS · ⚠ Compliance Risk</span></span>
+    <span id="pb4-icon" style="font-size:18px">▼</span>
+  </div>
+  <div id="pb4" style="padding:18px 20px;display:block">
+
+    <div class="ins al" style="margin-bottom:14px"><div class="it">⚠ COMPLIANCE ALERT — Treat Every Contact Deletion Case as Urgent</div><p>Contact deletion failures are not just support issues — they are potential GDPR/CCPA violations. Any case where deletion is confirmed to have failed (not just slow) must be escalated immediately regardless of stated severity.</p></div>
+
+    <div class="bar-grid" style="margin-bottom:14px">
+      <div class="cb" style="border-left:4px solid #7b5ea7">
+        <h4 style="color:#7b5ea7">📋 First Response Checklist</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          ☐ Collect: EID, MID, Contact Keys being deleted (anonymised if needed)<br>
+          ☐ Ask: How are they submitting deletions? (UI, API, or Contact Deletion Program automation)<br>
+          ☐ Ask: Are they getting a success response (200 OK) but contact persists?<br>
+          ☐ Ask: How long has it been since the deletion request?<br>
+          ☐ Clarify: Contact deletion is asynchronous and lowest-priority background process<br>
+          ☐ Check: Are sendable DEs involved? Non-sendable DEs are NOT auto-deleted<br>
+          ☐ Check: Is a concurrent sync running on the same DE? (conflict risk)
+        </p>
+      </div>
+      <div class="cb" style="border-left:4px solid #c23934">
+        <h4 style="color:#c23934">🔑 Critical Facts Every New Hire Must Know</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          1. <strong>Contact Deletion API = only method to permanently remove PII from MC</strong><br>
+          2. <strong>It only applies to sendable DEs</strong> — non-sendable DEs require a custom SSJS script<br>
+          3. Deletion is the <strong>lowest-priority background process</strong> — yields to sends, journeys, imports, automations<br>
+          4. A single contact deletion cascades across: All Subscribers, MobileConnect, MobilePush, DEs, system tables<br>
+          5. <strong>Deletion is permanent</strong> — no data retention, no history<br>
+          6. A 200 OK response means request was <em>accepted</em>, not completed — deletion is async<br>
+          7. Concurrent sync + deletion on same DE can cause apparent failures (lock conflict)
+        </p>
+      </div>
+    </div>
+
+    <div class="sec or" data-i="🔧" style="margin-top:0">Resolution by Scenario</div>
+    <div class="tw" style="margin-bottom:10px">
+      <table>
+        <thead class="or-head"><tr><th>Scenario</th><th>Explanation</th><th>Resolution</th></tr></thead>
+        <tbody class="or-body">
+          <tr>
+            <td><strong>Deletion is slow / taking days</strong></td>
+            <td>Expected behavior for large accounts. Deletion yields to all live activity. Cascades across all sendable DEs.</td>
+            <td>1. Confirm no active sends, journeys, imports running during deletion window<br>2. Pause non-critical automations temporarily to free processing slots<br>3. For 10M+ contact deletions: schedule during off-peak hours (weekend nights)<br>4. Inform customer: ~200K deletions per 3 days is realistic for large accounts with many sendable DEs<br>5. No SLA guarantee on deletion speed — set expectation with customer</td>
+          </tr>
+          <tr>
+            <td><strong>200 OK response but contact still visible</strong></td>
+            <td>Deletion is async — request accepted but not yet processed. Can also be caused by concurrent sync re-creating the record.</td>
+            <td>1. Wait 24–48 hours and re-check<br>2. If contact re-appears: check if a sync/import job is running every 30 min on the same DE — this re-creates the record<br>3. Solution: pause sync, run deletion, then resume sync. Or exclude deleted contacts from sync via filter<br>4. KB: <strong>005325512</strong></td>
+          </tr>
+          <tr>
+            <td><strong>PII in non-sendable DEs not removed after deletion</strong></td>
+            <td>Contact Deletion API only covers sendable DEs by design. Non-sendable DEs are the customer's responsibility.</td>
+            <td>1. Explain: Contact Deletion API = sendable DEs only (per GDPR swarm guidance)<br>2. Recommend: custom SSJS or Automation Studio SQL Delete activity to clear non-sendable DEs<br>3. Best practice: maintain a Deleted Contact Keys staging DE for reference<br>4. KB: <strong>000380199</strong></td>
+          </tr>
+          <tr>
+            <td><strong>API returns success but deletion never completes (GUS-level bug)</strong></td>
+            <td>Known platform bug where deletion queue is stuck or request lost</td>
+            <td>1. Confirm via orgCS: check if existing GUS item covers this pattern<br>2. Collect: Contact Keys, API call timestamps, response bodies<br>3. Escalate immediately — compliance risk<br>4. Post to <strong>#support-mce-journey-contact-audience-builder</strong> with urgency flag<br>5. Loop in AE/TAM if customer has contractual deadline (e.g. billing overage date)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bar-grid">
+      <div class="cb">
+        <h4>📚 Knowledge Articles (orgCS Validated)</h4>
+        <p style="font-size:12px;line-height:1.9">
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002uhxgIAA/view" target="_blank" style="color:#0070d2">📄 Contact Deletion in Contact Builder — #005325512</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002myK5IAI/view" target="_blank" style="color:#0070d2">📄 How to Bulk Delete Contacts — #000380199</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002uiggIAA/view" target="_blank" style="color:#0070d2">📄 Enable Contact Delete in Contact Builder — #005326615</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002hnxBIAQ/view" target="_blank" style="color:#0070d2">📄 FAQ: MC Contact Deletion — #005318036</a>
+        </p>
+      </div>
+      <div class="cb">
+        <h4>🚨 Escalate to GUS / Senior Engineer When</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          • Deletion confirmed not completed after 72+ hours with no active account load<br>
+          • Customer has a regulatory deadline (GDPR subject access request with a deadline date)<br>
+          • 200 OK returned but contact remains permanently and sync is not the cause<br>
+          • Customer reports large-scale failure (1000+ contacts not deleted over days)<br>
+          • <strong>Any confirmed GDPR deletion failure = immediate escalation regardless of severity</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CLUSTER 5: WAIT / DELAY / THROTTLING ══ -->
+<div style="background:white;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px;overflow:hidden">
+  <div style="background:#2e844a;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="togglePB('pb5')">
+    <span style="font-size:14px;font-weight:700">⏱ Cluster 5 — Journey Wait, Delay &amp; Throttling Issues &nbsp;<span style="background:rgba(255,255,255,.15);padding:2px 10px;border-radius:10px;font-size:11px">332 cases · 8.7% GUS · 22.4% Sev1 GUS</span></span>
+    <span id="pb5-icon" style="font-size:18px">▼</span>
+  </div>
+  <div id="pb5" style="padding:18px 20px;display:block">
+
+    <div class="bar-grid" style="margin-bottom:14px">
+      <div class="cb" style="border-left:4px solid #2e844a">
+        <h4 style="color:#2e844a">📋 First Response Checklist</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          ☐ Collect: EID, MID, Stack, Journey Name, Journey Version, Wait Activity name<br>
+          ☐ Ask: Are contacts stuck at the Wait step, or not progressing after it?<br>
+          ☐ Ask: What type of Wait? (Fixed Duration, Fixed Time, Wait by Attribute)<br>
+          ☐ Ask: If Wait by Attribute: what is the attribute date field? Is it populated for all contacts?<br>
+          ☐ Ask: What timezone is the Journey and the Wait activity configured in?<br>
+          ☐ Ask: Did this work in a previous journey version?<br>
+          ☐ Check: Is the Journey active and not paused?
+        </p>
+      </div>
+      <div class="cb" style="border-left:4px solid #ff6900">
+        <h4 style="color:#ff6900">🔑 Wait by Attribute — Key Behaviors Every New Hire Must Know</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          1. <strong>If attribute date field is NULL when contact enters Wait</strong> → contact is released immediately the next day at 8 AM EST (not an error — expected behavior)<br>
+          2. <strong>Wait queue is FIFO and shared across the entire database</strong> — high volume injections cause delays for ALL journeys on that DB<br>
+          3. <strong>"Extend wait until specific time"</strong> sets the expireTime — contacts won't move before that exact UTC time even if attribute condition is met<br>
+          4. <strong>Re-entry Anytime + Wait by Attribute</strong> = same contact can be in Wait multiple times simultaneously<br>
+          5. <strong>Journey Data vs Live Data:</strong> use Journey Data to snapshot the attribute at entry time; use live data if value may update after entry<br>
+          6. <strong>Wait queue capacity: ~2M contacts released/hour</strong> — large injections (6M+) cause visible delays
+        </p>
+      </div>
+    </div>
+
+    <div class="sec or" data-i="🔧" style="margin-top:0">Resolution by Scenario</div>
+    <div class="tw" style="margin-bottom:10px">
+      <table>
+        <thead class="or-head"><tr><th>Scenario</th><th>Root Cause</th><th>Resolution Steps</th></tr></thead>
+        <tbody class="or-body">
+          <tr>
+            <td><strong>Contacts not releasing from Wait by Attribute</strong></td>
+            <td>Attribute date field is NULL, or "Extend wait until specific time" is set to a future time, or wait queue backlog</td>
+            <td>1. Check if attribute date field is populated for affected contacts in the source DE<br>2. If NULL: contact will release next day 8 AM EST — inform customer this is expected<br>3. Check "Extend wait duration until specific time" setting — check timezone mismatch<br>4. Check wait queue depth (senior/backend access needed) — if high volume injection recently, queue backlog is likely<br>5. KB: <strong>005325371</strong>, <strong>005327081</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Contacts released immediately without waiting</strong></td>
+            <td>Attribute date field was empty/cleared before contact entered the wait</td>
+            <td>1. Verify when the contact entered the Wait activity vs. when DE data was populated<br>2. If entry happened before DE was populated → immediate release is expected behavior<br>3. Solution: ensure DE data is fully populated before journey injection. Use a Pre-Wait automation to load data first.<br>4. Consider switching to Journey Data (snapshot at entry) vs. live DE lookup</td>
+          </tr>
+          <tr>
+            <td><strong>Same contact getting Wait by Attribute multiple times / duplicate sends</strong></td>
+            <td>Journey configured as Re-entry Anytime + daily scheduled entry = same contact injected daily</td>
+            <td>1. Check journey re-entry settings<br>2. Review entry DE / scheduled injection — how often is data refreshed and contacts re-added?<br>3. If duplicate sends confirmed: pause journey immediately<br>4. Fix: change re-entry to "No re-entry" or add exit criteria to prevent re-entry before previous pass completes<br>5. Reference: <a href="https://salesforce.enterprise.slack.com/archives/C03E45C7HJ8" target="_blank" style="color:#0070d2">#support-mce-journey-contact-audience-builder</a> case: New Jatkotarjousautomaatio pattern</td>
+          </tr>
+          <tr>
+            <td><strong>Delay/throttling affecting entire Journey (all contacts slow)</strong></td>
+            <td>JB engine shared resource exhausted by large batch injection on same database</td>
+            <td>1. Check if a large injection occurred recently on the same DB (any journey)<br>2. JB engine = FIFO, first-in-first-out queue shared across all journeys on the DB<br>3. <strong>Workaround</strong>: inject in smaller batches (max ~500K at a time) staggered over time<br>4. HTS (High Throughput Sending) affects email send throughput only — does NOT speed up Wait or other JB activities<br>5. Inform customer: there is no way to bypass the shared queue — batching and staggering is the only lever</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bar-grid">
+      <div class="cb">
+        <h4>📚 Knowledge Articles (orgCS Validated)</h4>
+        <p style="font-size:12px;line-height:1.9">
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002uhsMIAQ/view" target="_blank" style="color:#0070d2">📄 Configure a Wait by Attribute Activity — #005325371</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002uitSIAQ/view" target="_blank" style="color:#0070d2">📄 Hold Contacts with Wait by Attribute — #005327081</a><br>
+          <a href="https://orgcs.lightning.force.com/lightning/r/Knowledge__kav/ka0Hx000002ukPvIAI/view" target="_blank" style="color:#0070d2">📄 Wait Activities in Journey Builder — #005330170</a>
+        </p>
+      </div>
+      <div class="cb">
+        <h4>🚨 Escalate to GUS / Senior Engineer When</h4>
+        <p style="font-size:12px;color:#444;line-height:1.8">
+          • Attribute is populated, timezone is correct, "extend until time" is past, but contacts still stuck &gt;24h<br>
+          • Wait by Attribute behavior changed between Journey versions with identical configuration<br>
+          • Entire database showing wait delays &gt;2h with no large injection identified<br>
+          • Customer reports same failure pattern across 3+ journeys with different attributes<br>
+          • Post to <strong>#support-mce-journey-contact-audience-builder</strong> with: Journey Name, Version, sample subscriber key, attribute field name, expected vs actual release time
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK REFERENCE -->
+<div class="sec or" data-i="⚡">Quick Reference — Info to Collect on Every JB Case</div>
+<div class="tw">
+  <table>
+    <thead class="or-head"><tr><th>Field</th><th>Where to Find It</th><th>Why It Matters</th></tr></thead>
+    <tbody class="or-body">
+      <tr><td><strong>EID (Enterprise ID)</strong></td><td>Case contact org details / impersonation URL</td><td>Required for all backend queries</td></tr>
+      <tr><td><strong>MID (Business Unit ID)</strong></td><td>MC URL after login / Setup → Account Info</td><td>Identifies which BU is affected</td></tr>
+      <tr><td><strong>Stack / Database</strong></td><td>MC URL (e.g. s50 = Stack 50) / ask senior engineer</td><td>Required for backend DB queries</td></tr>
+      <tr><td><strong>Journey Name + Version</strong></td><td>Journey Builder → Journey List</td><td>Version matters — bugs may be version-specific</td></tr>
+      <tr><td><strong>Triggered Send ID (TSID)</strong></td><td>JB Interactions tab → email activity GUID</td><td>Needed for all send/error queries</td></tr>
+      <tr><td><strong>Sample Subscriber Keys</strong></td><td>Customer-provided / JB error details</td><td>Required to trace individual contact flow</td></tr>
+      <tr><td><strong>Impersonation Access</strong></td><td>Help &amp; Training → Grant Login Access</td><td>Must be granted before reproducing any issue</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="sec or" data-i="💬">Slack Channels for Escalation &amp; Help</div>
+<div class="tw">
+  <table>
+    <thead class="or-head"><tr><th>Channel</th><th>Use For</th></tr></thead>
+    <tbody class="or-body">
+      <tr><td><a href="https://salesforce.enterprise.slack.com/archives/C03E45C7HJ8" target="_blank" style="color:#0070d2"><strong>#support-mce-journey-contact-audience-builder</strong></a></td><td>All JB / CB / AB case questions — primary peer support channel</td></tr>
+      <tr><td><a href="https://salesforce.enterprise.slack.com/archives/C035DH94HV1" target="_blank" style="color:#0070d2"><strong>#support-mc-retroactive-swarming</strong></a></td><td>Post-case learnings, complex resolution summaries, GDPR/compliance cases</td></tr>
+      <tr><td><a href="https://salesforce.enterprise.slack.com/archives/C0210PSPZ25" target="_blank" style="color:#0070d2"><strong>#support-mc-help</strong></a></td><td>General MC support questions, case reviews, senior engineer input</td></tr>
+      <tr><td><a href="https://salesforce.enterprise.slack.com/archives/C01PR9SCPJ5" target="_blank" style="color:#0070d2"><strong>#ask-scct</strong></a></td><td>GDPR/CCPA compliance questions, data retention, privacy law context</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+</div>
+
+<script>
+function togglePB(id) {
+  var el = document.getElementById(id);
+  var icon = document.getElementById(id + '-icon');
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    icon.textContent = '▼';
+  } else {
+    el.style.display = 'none';
+    icon.textContent = '▶';
+  }
+}
+</script>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
